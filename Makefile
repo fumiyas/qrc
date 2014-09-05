@@ -1,11 +1,11 @@
-GO=		GOPATH="$$PWD" go
+GO=		go
 
 REPO=		github.com/fumiyas/qrc
 
 default: build
 
 build:
-	$(GO) build
+	$(GO) build cmd/qrc/qrc.go
 
 get:
 	$(GO) get

@@ -6,7 +6,9 @@ import (
 	"bufio"
 	"github.com/jessevdk/go-flags"
 	"code.google.com/p/rsc/qr"
-	"github.com/mgutz/ansi"
+
+	"github.com/fumiyas/qrc/lib"
+	"github.com/fumiyas/qrc/tty"
 )
 
 type cmdOptions struct {
@@ -19,40 +21,6 @@ func showHelp() {
 `
 
 	os.Stderr.Write([]byte(v))
-}
-
-func printAA(code *qr.Code, inverse bool) {
-	reset := ansi.ColorCode("reset")
-	black := ansi.ColorCode(":black")
-	white := ansi.ColorCode(":white")
-
-	if inverse {
-		black, white = white, black
-	}
-
-	line := white + fmt.Sprintf("%*s", code.Size * 2 + 2, "") + reset + "\n"
-
-	fmt.Print(line);
-	for y := 0; y < code.Size; y++ {
-		fmt.Print(white, " ")
-		color_prev := white
-		for x := 0; x < code.Size; x++ {
-			if code.Black(x, y) {
-				if color_prev != black {
-					fmt.Print(black)
-					color_prev = black
-				}
-			} else {
-				if color_prev != white {
-					fmt.Print(white)
-					color_prev = white
-				}
-			}
-			fmt.Print("  ")
-		}
-		fmt.Print(white, " ", reset, "\n")
-	}
-	fmt.Print(line);
 }
 
 func main() {
@@ -84,6 +52,11 @@ func main() {
 
 	code, _ := qr.Encode(text, qr.L)
 
-	printAA(code, opts.Inverse)
+	da1, err := tty.GetDeviceAttributes1(os.Stdout)
+	if err == nil && da1[tty.DA1_SIXEL] {
+		fmt.Printf("FIXME: Print QR Code in Sixel format\n")
+	} else {
+		qrc.PrintAA(code, opts.Inverse)
+	}
 }
 

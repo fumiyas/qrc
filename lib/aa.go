@@ -10,7 +10,6 @@ func PrintAA(code *qr.Code, inverse bool) {
 	reset := ansi.ColorCode("reset")
 	black := ansi.ColorCode(":black")
 	white := ansi.ColorCode(":white")
-
 	if inverse {
 		black, white = white, black
 	}

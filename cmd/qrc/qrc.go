@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"fmt"
 	"bufio"
 	"github.com/jessevdk/go-flags"
 	"code.google.com/p/rsc/qr"
@@ -54,7 +53,7 @@ func main() {
 
 	da1, err := tty.GetDeviceAttributes1(os.Stdout)
 	if err == nil && da1[tty.DA1_SIXEL] {
-		fmt.Printf("FIXME: Print QR Code in Sixel format\n")
+		qrc.PrintSixel(code, opts.Inverse)
 	} else {
 		qrc.PrintAA(code, opts.Inverse)
 	}

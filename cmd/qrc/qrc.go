@@ -11,12 +11,23 @@ import (
 )
 
 type cmdOptions struct {
-	Help    bool `short:"h" long:"help" description:"show this help message and exit"`
-	Inverse bool `short:"i" long:"invert" description:"invert black and white"`
+	Help    bool `short:"h" long:"help" description:"show this help message"`
+	Inverse bool `short:"i" long:"invert" description:"invert color"`
 }
 
 func showHelp() {
 	const v = `Usage: qrc [OPTIONS] [TEXT]
+
+Options:
+  -h, --help
+    Show this help message
+  -i, --invert
+    Invert color
+
+Text examples:
+  URLTO:http://www.example.jp/
+  MAILTO:foobar@example.jp
+  WIFI:S:myssid;T:WPA;P:pass123;;
 `
 
 	os.Stderr.Write([]byte(v))

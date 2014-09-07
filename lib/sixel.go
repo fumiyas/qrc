@@ -8,19 +8,19 @@ import (
 func PrintSixel(code *qr.Code, inverse bool) {
 	black := "0"
 	white := "1"
+
+	fmt.Print(
+		"\x1BPq",
+		"#", black, ";2;0;0;0" ,
+		"#", white, ";2;100;100;100",
+	)
+
 	if inverse {
 		black, white = white, black
 	}
 
 	line := "#" + white + "!" + fmt.Sprintf("%d", (code.Size+2)*6) + "~"
-
-	fmt.Print(
-		"\x1BPq",
-		"#", black, ";2;0;0;0",
-		"#", white, ";2;100;100;100",
-		line,
-		"-",
-	)
+	fmt.Print(line, "-")
 
 	for x := 0; x < code.Size; x++ {
 		fmt.Print("#", white)

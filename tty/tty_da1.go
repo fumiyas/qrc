@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// http://www.vt100.net/docs/vt510-rm/DA1
 const (
 	DA1_132_COLUMNS                         = 1
 	DA1_PRINTER_PORT                        = 2
@@ -28,10 +29,11 @@ const (
 	DA1_PCTERM                              = 44
 	DA1_SOFT_KEY_MAP                        = 45
 	DA1_ASCII_EMULATION                     = 46
-	DA1_MAX                                 = 64
+	DA1_CLASS4                              = 64
+	DA1_MAX                                 = 64 // FIXME
 )
 
-type DeviceAttributes1 [DA1_MAX]bool
+type DeviceAttributes1 [DA1_MAX+1]bool
 
 func GetDeviceAttributes1(file *os.File) (DeviceAttributes1, error) {
 	var err error

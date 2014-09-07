@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	kernel32         = syscall.MustLoadDLL("kernel32.dll")
+	kernel32 = syscall.MustLoadDLL("kernel32.dll")
 )
 
 // IsTty checks if the given fd is a tty
@@ -19,4 +19,3 @@ func IsTty(file *os.File) bool {
 
 	return r1 != 0 && err != nil
 }
-

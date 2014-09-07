@@ -1,8 +1,8 @@
 package qrc
 
 import (
-	"fmt"
 	"code.google.com/p/rsc/qr"
+	"fmt"
 	"github.com/mgutz/ansi"
 )
 
@@ -14,9 +14,9 @@ func PrintAA(code *qr.Code, inverse bool) {
 		black, white = white, black
 	}
 
-	line := white + fmt.Sprintf("%*s", code.Size * 2 + 2, "") + reset + "\n"
+	line := white + fmt.Sprintf("%*s", code.Size*2+2, "") + reset + "\n"
 
-	fmt.Print(line);
+	fmt.Print(line)
 	for y := 0; y < code.Size; y++ {
 		fmt.Print(white, " ")
 		color_prev := white
@@ -36,6 +36,5 @@ func PrintAA(code *qr.Code, inverse bool) {
 		}
 		fmt.Print(white, " ", reset, "\n")
 	}
-	fmt.Print(line);
+	fmt.Print(line)
 }
-

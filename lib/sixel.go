@@ -1,8 +1,8 @@
 package qrc
 
 import (
-	"fmt"
 	"code.google.com/p/rsc/qr"
+	"fmt"
 )
 
 func PrintSixel(code *qr.Code, inverse bool) {
@@ -12,7 +12,7 @@ func PrintSixel(code *qr.Code, inverse bool) {
 		black, white = white, black
 	}
 
-	line := "#" + white + "!" + fmt.Sprintf("%d", (code.Size + 2) * 6) + "~"
+	line := "#" + white + "!" + fmt.Sprintf("%d", (code.Size+2)*6) + "~"
 
 	fmt.Print(
 		"\x1BPq",
@@ -41,7 +41,7 @@ func PrintSixel(code *qr.Code, inverse bool) {
 			run += 6
 		}
 		if color == white {
-			fmt.Printf("#%s!%d~", white, run + 6)
+			fmt.Printf("#%s!%d~", white, run+6)
 		} else {
 			fmt.Printf("#%s!%d~#%s!6~", color, run, white)
 		}
@@ -50,4 +50,3 @@ func PrintSixel(code *qr.Code, inverse bool) {
 	fmt.Print(line)
 	fmt.Print("\x1B\\")
 }
-

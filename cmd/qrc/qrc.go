@@ -1,18 +1,18 @@
 package main
 
 import (
-	"os"
 	"bufio"
-	"github.com/jessevdk/go-flags"
 	"code.google.com/p/rsc/qr"
+	"github.com/jessevdk/go-flags"
+	"os"
 
 	"github.com/fumiyas/qrc/lib"
 	"github.com/fumiyas/qrc/tty"
 )
 
 type cmdOptions struct {
-	Help		bool	`short:"h" long:"help" description:"show this help message and exit"`
-	Inverse		bool	`short:"i" long:"invert" description:"invert black and white"`
+	Help    bool `short:"h" long:"help" description:"show this help message and exit"`
+	Inverse bool `short:"i" long:"invert" description:"invert black and white"`
 }
 
 func showHelp() {
@@ -58,4 +58,3 @@ func main() {
 		qrc.PrintAA(code, opts.Inverse)
 	}
 }
-

@@ -1,8 +1,8 @@
 package tty
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"syscall"
 	"unsafe"
 )
@@ -63,4 +63,3 @@ func IsTty(file *os.File) bool {
 
 	return (err == nil)
 }
-

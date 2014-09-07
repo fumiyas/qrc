@@ -10,4 +10,3 @@ const (
 	ioctlGetTermios = syscall.TIOCGETA
 	ioctlSetTermios = syscall.TIOCSETA
 )
-

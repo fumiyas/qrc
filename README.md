@@ -1,16 +1,18 @@
-QR code generator for terminal (ASCII Art, Sixel)
+QR code generator for terminals
 ======================================================================
 
   * Copyright (C) 2014 SATOH Fumiyasu @ OSS Technology Corp., Japan
   * License: MIT License
-  * URL: <https://GitHub.com/fumiyas/qrc>
+  * URL: <https://github.com/fumiyas/qrc>
   * Home: <https://fumiyas.github.io/>
 
 What's this?
 ---------------------------------------------------------------------
 
-This program generates QR code in ASCII Art or Sixel format
-for terminals.
+This program generates QR codes in
+[ASCII art](http://en.wikipedia.org/wiki/ASCII_art) or
+[Sixel](http://en.wikipedia.org/wiki/Sixel) format for
+terminals, e.g., console, xterm, Windows command prompt and so on.
 
 ```console
 $ qrc https://fumiyas.github.io/

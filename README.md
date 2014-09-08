@@ -12,7 +12,9 @@ What's this?
 This program generates QR codes in
 [ASCII art](http://en.wikipedia.org/wiki/ASCII_art) or
 [Sixel](http://en.wikipedia.org/wiki/Sixel) format for
-terminals, e.g., console, xterm, Windows command prompt and so on.
+terminals, e.g., console, xterm,
+[mlterm](http://sourceforge.net/projects/mlterm/),
+Windows command prompt and so on.
 
 ```console
 $ qrc https://fumiyas.github.io/

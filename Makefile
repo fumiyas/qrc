@@ -1,11 +1,17 @@
 GO=		go
+GOX=		gox
 
-REPO=		github.com/fumiyas/qrc
+GO_PACKAGE=	github.com/fumiyas/qrc/cmd/qrc
+CROSS_TARGETS=	linux darwin windows
 
 default: build
+
+get:
+	$(GO) get
 
 build:
 	$(GO) build cmd/qrc/qrc.go
 
-get:
-	$(GO) get
+cross:
+	$(GOX) -os="$(CROSS_TARGETS)" $(GO_PACKAGE)
+

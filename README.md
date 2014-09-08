@@ -12,19 +12,26 @@ What's this?
 This program generates QR code in ASCII Art or Sixel format
 for terminals.
 
-Install
+```console
+$ qrc https://fumiyas.github.io/
+...
+```
+
+![optimized](qrc-demo.png)
+
+Download
 ---------------------------------------------------------------------
+
+Binary files are here for Linux, Mac OS X and Windows:
+
+  https://github.com/fumiyas/qrc/releases
+
+Build and Install
+---------------------------------------------------------------------
+
+If you have Go language environment, try the follow:
 
 ```console
 $ go get https://GitHub.com/fumiyas/qrc/cmd/qrc
 ```
 
-Usage
----------------------------------------------------------------------
-
-```console
-$ $GOPATH/bin/qrc https://fumiyas.github.io/
-...
-```
-
-![optimized](qrc-demo.png)

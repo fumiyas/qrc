@@ -1,10 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"code.google.com/p/rsc/qr"
-	"github.com/mattn/go-colorable"
+	"fmt"
 	"github.com/jessevdk/go-flags"
+	"github.com/mattn/go-colorable"
+	"io/ioutil"
 	"os"
 
 	"github.com/fumiyas/qrc/lib"
@@ -34,6 +35,11 @@ Text examples:
 	os.Stderr.Write([]byte(v))
 }
 
+func pErr(format string, a ...interface{}) {
+	fmt.Fprint(os.Stdout, os.Args[0], ": ")
+	fmt.Fprintf(os.Stdout, format, a...)
+}
+
 func main() {
 	ret := 0
 	defer func() { os.Exit(ret) }()
@@ -55,9 +61,12 @@ func main() {
 	if len(args) == 1 {
 		text = args[0]
 	} else {
-		// FIXME: Read all input
-		rd := bufio.NewReaderSize(os.Stdin, 1024)
-		text_bytes, _, _ := rd.ReadLine()
+		text_bytes, err := ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			pErr("read from stdin failed: %v\n", err)
+			ret = 1
+			return
+		}
 		text = string(text_bytes)
 	}
 

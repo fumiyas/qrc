@@ -16,13 +16,15 @@ Install
 ---------------------------------------------------------------------
 
 ```console
-$ go get https://GitHub.com/fumiyas/qrc
+$ go get https://GitHub.com/fumiyas/qrc/cmd/qrc
 ```
 
 Usage
 ---------------------------------------------------------------------
 
 ```console
-$ $GOPATH/bin/qrc input text
+$ $GOPATH/bin/qrc https://fumiyas.github.io/
+...
 ```
 
+![optimized](qrc-demo.png)

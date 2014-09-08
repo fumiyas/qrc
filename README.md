@@ -32,6 +32,6 @@ Build from source codes
 If you have Go language environment, try the following:
 
 ```console
-$ go get https://GitHub.com/fumiyas/qrc/cmd/qrc
+$ go get github.com/fumiyas/qrc/cmd/qrc
 ```
 

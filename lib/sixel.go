@@ -23,12 +23,12 @@ func PrintSixel(w io.Writer, code *qr.Code, inverse bool) {
 	line := "#" + white + "!" + fmt.Sprintf("%d", (code.Size+2)*6) + "~"
 	fmt.Fprint(w, line, "-")
 
-	for x := 0; x < code.Size; x++ {
+	for y := 0; y < code.Size; y++ {
 		fmt.Fprint(w, "#", white)
 		color := white
 		run := 6
 		var current string
-		for y := 0; y < code.Size; y++ {
+		for x := 0; x < code.Size; x++ {
 			if code.Black(x, y) {
 				current = black
 			} else {

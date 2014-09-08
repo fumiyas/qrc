@@ -2,7 +2,7 @@ QR code generator for terminal (ASCII Art, Sixel)
 ======================================================================
 
   * Copyright (C) 2014 SATOH Fumiyasu @ OSS Technology Corp., Japan
-  * License: MIT
+  * License: MIT License
   * URL: <https://GitHub.com/fumiyas/qrc>
   * Home: <https://fumiyas.github.io/>
 

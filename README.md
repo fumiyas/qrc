@@ -16,8 +16,26 @@ terminals, e.g., console, xterm,
 [mlterm](http://sourceforge.net/projects/mlterm/),
 Windows command prompt and so on.
 
+Usage
+---------------------------------------------------------------------
+
 ```console
+$ qrc --help
+Usage: qrc [OPTIONS] [TEXT]
+
+Options:
+  -h, --help
+    Show this help message
+  -i, --invert
+    Invert color
+
+Text examples:
+  http://www.example.jp/
+  MAILTO:foobar@example.jp
+  WIFI:S:myssid;T:WPA;P:pass123;;
 $ qrc https://fumiyas.github.io/
+...
+$ qrc 'WIFI:S:Our-ssid;T:WPA;P:secret;;'
 ...
 ```
 

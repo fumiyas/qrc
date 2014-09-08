@@ -26,7 +26,7 @@ func PrintSixel(w io.Writer, code *qr.Code, inverse bool) {
 	for y := 0; y < code.Size; y++ {
 		fmt.Fprint(w, "#", white)
 		color := white
-		run := 6
+		repeat := 6
 		var current string
 		for x := 0; x < code.Size; x++ {
 			if code.Black(x, y) {
@@ -35,16 +35,16 @@ func PrintSixel(w io.Writer, code *qr.Code, inverse bool) {
 				current = white
 			}
 			if current != color {
-				fmt.Fprint(w, "#", color, "!", run, "~")
+				fmt.Fprint(w, "#", color, "!", repeat, "~")
 				color = current
-				run = 0
+				repeat = 0
 			}
-			run += 6
+			repeat += 6
 		}
 		if color == white {
-			fmt.Fprintf(w, "#%s!%d~", white, run+6)
+			fmt.Fprintf(w, "#%s!%d~", white, repeat+6)
 		} else {
-			fmt.Fprintf(w, "#%s!%d~#%s!6~", color, run, white)
+			fmt.Fprintf(w, "#%s!%d~#%s!6~", color, repeat, white)
 		}
 		fmt.Fprint(w, "-")
 	}

@@ -26,10 +26,10 @@ Binary files are here for Linux, Mac OS X and Windows:
 
   https://github.com/fumiyas/qrc/releases
 
-Build and Install
+Build from source codes
 ---------------------------------------------------------------------
 
-If you have Go language environment, try the follow:
+If you have Go language environment, try the following:
 
 ```console
 $ go get https://GitHub.com/fumiyas/qrc/cmd/qrc

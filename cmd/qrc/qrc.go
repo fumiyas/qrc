@@ -26,7 +26,7 @@ Options:
     Invert color
 
 Text examples:
-  URLTO:http://www.example.jp/
+  http://www.example.jp/
   MAILTO:foobar@example.jp
   WIFI:S:myssid;T:WPA;P:pass123;;
 `

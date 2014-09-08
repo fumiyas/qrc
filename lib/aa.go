@@ -1,12 +1,17 @@
 package qrc
 
 import (
+	"bufio"
 	"code.google.com/p/rsc/qr"
 	"fmt"
 	"github.com/mgutz/ansi"
+	"io"
 )
 
-func PrintAA(code *qr.Code, inverse bool) {
+func PrintAA(w_in io.Writer, code *qr.Code, inverse bool) {
+	// Buffering required for Windows (go-colorable) support
+	w := bufio.NewWriterSize(w_in, 1024)
+
 	reset := ansi.ColorCode("reset")
 	black := ansi.ColorCode(":black")
 	white := ansi.ColorCode(":white")
@@ -16,25 +21,27 @@ func PrintAA(code *qr.Code, inverse bool) {
 
 	line := white + fmt.Sprintf("%*s", code.Size*2+2, "") + reset + "\n"
 
-	fmt.Print(line)
+	fmt.Fprint(w, line)
 	for y := 0; y < code.Size; y++ {
-		fmt.Print(white, " ")
+		fmt.Fprint(w, white, " ")
 		color_prev := white
 		for x := 0; x < code.Size; x++ {
 			if code.Black(x, y) {
 				if color_prev != black {
-					fmt.Print(black)
+					fmt.Fprint(w, black)
 					color_prev = black
 				}
 			} else {
 				if color_prev != white {
-					fmt.Print(white)
+					fmt.Fprint(w, white)
 					color_prev = white
 				}
 			}
-			fmt.Print("  ")
+			fmt.Fprint(w, "  ")
 		}
-		fmt.Print(white, " ", reset, "\n")
+		fmt.Fprint(w, white, " ", reset, "\n")
+		w.Flush()
 	}
-	fmt.Print(line)
+	fmt.Fprint(w, line)
+	w.Flush()
 }

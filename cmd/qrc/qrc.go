@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"code.google.com/p/rsc/qr"
+	"github.com/mattn/go-colorable"
 	"github.com/jessevdk/go-flags"
 	"os"
 
@@ -64,8 +65,9 @@ func main() {
 
 	da1, err := tty.GetDeviceAttributes1(os.Stdout)
 	if err == nil && da1[tty.DA1_SIXEL] {
-		qrc.PrintSixel(code, opts.Inverse)
+		qrc.PrintSixel(os.Stdout, code, opts.Inverse)
 	} else {
-		qrc.PrintAA(code, opts.Inverse)
+		stdout := colorable.NewColorableStdout()
+		qrc.PrintAA(stdout, code, opts.Inverse)
 	}
 }

@@ -1,4 +1,4 @@
-// +build darwin freebsd
+// +build darwin freebsd netbsd openbsd
 
 package tty
 

@@ -3,15 +3,16 @@ package qrc
 import (
 	"code.google.com/p/rsc/qr"
 	"fmt"
+	"io"
 )
 
-func PrintSixel(code *qr.Code, inverse bool) {
+func PrintSixel(w io.Writer, code *qr.Code, inverse bool) {
 	black := "0"
 	white := "1"
 
-	fmt.Print(
+	fmt.Fprint(w,
 		"\x1BPq",
-		"#", black, ";2;0;0;0" ,
+		"#", black, ";2;0;0;0",
 		"#", white, ";2;100;100;100",
 	)
 
@@ -20,10 +21,10 @@ func PrintSixel(code *qr.Code, inverse bool) {
 	}
 
 	line := "#" + white + "!" + fmt.Sprintf("%d", (code.Size+2)*6) + "~"
-	fmt.Print(line, "-")
+	fmt.Fprint(w, line, "-")
 
 	for x := 0; x < code.Size; x++ {
-		fmt.Print("#", white)
+		fmt.Fprint(w, "#", white)
 		color := white
 		run := 6
 		var current string
@@ -34,19 +35,19 @@ func PrintSixel(code *qr.Code, inverse bool) {
 				current = white
 			}
 			if current != color {
-				fmt.Print("#", color, "!", run, "~")
+				fmt.Fprint(w, "#", color, "!", run, "~")
 				color = current
 				run = 0
 			}
 			run += 6
 		}
 		if color == white {
-			fmt.Printf("#%s!%d~", white, run+6)
+			fmt.Fprintf(w, "#%s!%d~", white, run+6)
 		} else {
-			fmt.Printf("#%s!%d~#%s!6~", color, run, white)
+			fmt.Fprintf(w, "#%s!%d~#%s!6~", color, run, white)
 		}
-		fmt.Print("-")
+		fmt.Fprint(w, "-")
 	}
-	fmt.Print(line)
-	fmt.Print("\x1B\\")
+	fmt.Fprint(w, line)
+	fmt.Fprint(w, "\x1B\\")
 }

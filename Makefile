@@ -2,7 +2,7 @@ GO=		go
 GOX=		gox
 
 GO_PACKAGE=	github.com/fumiyas/qrc/cmd/qrc
-CROSS_TARGETS=	linux darwin windows
+CROSS_TARGETS=	linux/amd64 linux/386 darwin/amd64 windows/386
 
 default: build
 
@@ -13,5 +13,5 @@ build:
 	$(GO) build cmd/qrc/qrc.go
 
 cross:
-	$(GOX) -os="$(CROSS_TARGETS)" $(GO_PACKAGE)
+	$(GOX) -osarch="$(CROSS_TARGETS)" $(GO_PACKAGE)
 

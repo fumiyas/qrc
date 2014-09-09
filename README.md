@@ -57,3 +57,14 @@ If you have Go language environment, try the following:
 $ go get github.com/fumiyas/qrc/cmd/qrc
 ```
 
+TODO
+----------------------------------------------------------------------
+
+  * Add the following options:
+    * `--format <aa|sixel>`
+    * `--aa-color-scheme <ansi|windows>`
+    * `--foreground-color R:G:B`
+    * `--background-color R:G:B`
+    * `--margin-color R:G:B`
+    * `--margin-size N`
+

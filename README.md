@@ -67,4 +67,5 @@ TODO
     * `--background-color R:G:B`
     * `--margin-color R:G:B`
     * `--margin-size N`
+    * `--input-encoding E`
 

@@ -75,3 +75,8 @@ TODO
     * `--margin-size N`
     * `--input-encoding E`
 
+Similar products
+----------------------------------------------------------------------
+
+  * <https://godoc.org/github.com/GeertJohan/go.qrt>
+  * <https://github.com/gtanner/qrcode-terminal>

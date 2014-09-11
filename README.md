@@ -75,8 +75,20 @@ TODO
     * `--margin-size N`
     * `--input-encoding E`
 
+Contributors
+----------------------------------------------------------------------
+
+  * Hayaki Saito (@saitoha)
+
 Similar products
 ----------------------------------------------------------------------
 
-  * <https://godoc.org/github.com/GeertJohan/go.qrt>
-  * <https://github.com/gtanner/qrcode-terminal>
+  * Go
+    * <https://godoc.org/github.com/GeertJohan/go.qrt>
+  * JavaScript (Node)
+    * <https://github.com/gtanner/qrcode-terminal>
+  * Ruby
+    * <https://gist.github.com/saitoha/10483508> (qrcode-sixel)
+    * <https://gist.github.com/fumiyas/10490722> (qrcode-sixel)
+    * <https://github.com/fumiyas/home-commands/blob/master/qrcode-aa>
+

@@ -1,10 +1,10 @@
-QR code generator for terminals
+QR code generator for text terminals
 ======================================================================
 
   * Copyright (C) 2014 SATOH Fumiyasu @ OSS Technology Corp., Japan
   * License: MIT License
-  * URL: <https://github.com/fumiyas/qrc>
-  * Home: <https://fumiyas.github.io/>
+  * Development home: <https://github.com/fumiyas/qrc>
+  * Author's home: <https://fumiyas.github.io/>
 
 What's this?
 ---------------------------------------------------------------------
@@ -12,7 +12,7 @@ What's this?
 This program generates QR codes in
 [ASCII art](http://en.wikipedia.org/wiki/ASCII_art) or
 [Sixel](http://en.wikipedia.org/wiki/Sixel) format for
-terminals, e.g., console, xterm,
+text terminals, e.g., console, xterm,
 [mlterm](http://sourceforge.net/projects/mlterm/),
 Windows command prompt and so on.
 
@@ -46,7 +46,7 @@ Download
 
 Binary files are here for Linux, Mac OS X and Windows:
 
-  https://github.com/fumiyas/qrc/releases
+  * https://github.com/fumiyas/qrc/releases
 
 Build from source codes
 ---------------------------------------------------------------------

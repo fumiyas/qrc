@@ -19,6 +19,9 @@ Windows command prompt and so on.
 Usage
 ---------------------------------------------------------------------
 
+`qrc` program takes a text from command-line argument or standard
+input (if no command-line argument) and encodes it to a QR code.
+
 ```console
 $ qrc --help
 Usage: qrc [OPTIONS] [TEXT]
@@ -38,6 +41,9 @@ $ qrc https://fumiyas.github.io/
 $ qrc 'WIFI:S:Our-ssid;T:WPA;P:secret;;'
 ...
 ```
+
+You can get a QR code in Sixel graphics if the standard output is
+a terminal and it supports Sixel.
 
 ![optimized](qrc-demo.png)
 

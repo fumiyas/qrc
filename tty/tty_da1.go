@@ -31,8 +31,11 @@ const (
 	DA1_PCTERM                              = 44
 	DA1_SOFT_KEY_MAP                        = 45
 	DA1_ASCII_EMULATION                     = 46
+	DA1_CLASS2                              = 62
+	DA1_CLASS3                              = 63
 	DA1_CLASS4                              = 64
-	DA1_MAX                                 = 64 // FIXME
+	DA1_CLASS5                              = 65
+	DA1_MAX                                 = 65
 )
 
 type DeviceAttributes1 [DA1_MAX+1]bool

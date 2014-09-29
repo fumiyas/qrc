@@ -45,7 +45,7 @@ $ qrc 'WIFI:S:Our-ssid;T:WPA;P:secret;;'
 You can get a QR code in Sixel graphics if the standard output is
 a terminal and it supports Sixel.
 
-![optimized](qrc-demo.png)
+![](qrc-demo.png)
 
 Download
 ---------------------------------------------------------------------

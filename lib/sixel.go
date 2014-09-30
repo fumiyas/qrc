@@ -11,7 +11,7 @@ func PrintSixel(w io.Writer, code *qr.Code, inverse bool) {
 	white := "1"
 
 	fmt.Fprint(w,
-		"\x1BPq",
+		"\x1BPq\"1;1",
 		"#", black, ";2;0;0;0",
 		"#", white, ";2;100;100;100",
 	)

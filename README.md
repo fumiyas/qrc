@@ -74,6 +74,7 @@ TODO
     * `--margin-color R:G:B`
     * `--margin-size N`
     * `--input-encoding E`
+  * Timeout for tty.GetDeviceAttributes1()
 
 Contributors
 ----------------------------------------------------------------------

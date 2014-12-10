@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/fumiyas/qrc/lib"
-	"github.com/fumiyas/qrc/tty"
+	"github.com/fumiyas/go-tty"
 )
 
 type cmdOptions struct {

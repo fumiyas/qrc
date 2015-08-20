@@ -1,7 +1,7 @@
 QR code generator for text terminals
 ======================================================================
 
-  * Copyright (C) 2014 SATOH Fumiyasu @ OSS Technology Corp., Japan
+  * Copyright (C) 2014-2015 SATOH Fumiyasu @ OSS Technology Corp., Japan
   * License: MIT License
   * Development home: <https://github.com/fumiyas/qrc>
   * Author's home: <https://fumiyas.github.io/>

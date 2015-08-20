@@ -71,6 +71,11 @@ func main() {
 	}
 
 	grid, err := qrencode.Encode(text, qrencode.ECLevelL)
+	if err != nil {
+		pErr("encode failed: %v\n", err)
+		ret = 1
+		return
+	}
 
 	da1, err := tty.GetDeviceAttributes1(os.Stdout)
 	if err == nil && da1[tty.DA1_SIXEL] {

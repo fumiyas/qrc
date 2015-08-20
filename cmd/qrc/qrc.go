@@ -1,7 +1,7 @@
 package main
 
 import (
-	"code.google.com/p/rsc/qr"
+	"github.com/qpliu/qrencode-go/qrencode"
 	"fmt"
 	"github.com/jessevdk/go-flags"
 	"github.com/mattn/go-colorable"
@@ -70,13 +70,13 @@ func main() {
 		text = string(text_bytes)
 	}
 
-	code, _ := qr.Encode(text, qr.L)
+	grid, err := qrencode.Encode(text, qrencode.ECLevelL)
 
 	da1, err := tty.GetDeviceAttributes1(os.Stdout)
 	if err == nil && da1[tty.DA1_SIXEL] {
-		qrc.PrintSixel(os.Stdout, code, opts.Inverse)
+		qrc.PrintSixel(os.Stdout, grid, opts.Inverse)
 	} else {
 		stdout := colorable.NewColorableStdout()
-		qrc.PrintAA(stdout, code, opts.Inverse)
+		qrc.PrintAA(stdout, grid, opts.Inverse)
 	}
 }

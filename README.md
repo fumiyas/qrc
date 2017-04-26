@@ -12,7 +12,7 @@ What's this?
 This program generates QR codes in
 [ASCII art](http://en.wikipedia.org/wiki/ASCII_art) or
 [Sixel](http://en.wikipedia.org/wiki/Sixel) format for
-text terminals, e.g., console, xterm,
+text terminals, e.g., console, xterm (with `-ti 340` option to enable Sixel),
 [mlterm](http://sourceforge.net/projects/mlterm/),
 Windows command prompt and so on.
 

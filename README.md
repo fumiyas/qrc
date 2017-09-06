@@ -16,6 +16,12 @@ text terminals, e.g., console, xterm (with `-ti 340` option to enable Sixel),
 [mlterm](http://sourceforge.net/projects/mlterm/),
 Windows command prompt and so on.
 
+Use case
+---------------------------------------------------------------------
+
+You can transfer data to smartphones with a QR code reader application
+from your terminal.
+
 Usage
 ---------------------------------------------------------------------
 

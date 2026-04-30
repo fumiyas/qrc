@@ -1,6 +1,8 @@
 module github.com/fumiyas/qrc
 
-go 1.21
+go 1.25
+
+toolchain go1.25.9
 
 require (
 	github.com/jessevdk/go-flags v1.6.1

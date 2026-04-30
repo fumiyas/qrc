@@ -1,7 +1,7 @@
 QR code generator for text terminals
 ======================================================================
 
-  * Copyright (C) 2014-2017 SATOH Fumiyasu @ OSS Technology Corp., Japan
+  * Copyright (C) 2014-2026 SATOH Fumiyasu @ OSSTech Corp., Japan
   * License: MIT License
   * Development home: <https://github.com/fumiyas/qrc>
   * Author's home: <https://fumiyas.github.io/>
@@ -10,8 +10,10 @@ What's this?
 ---------------------------------------------------------------------
 
 This program generates QR codes in
-[ASCII art](http://en.wikipedia.org/wiki/ASCII_art) or
-[Sixel](http://en.wikipedia.org/wiki/Sixel) format for
+[ANSI colors](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors),
+[Sixel](http://en.wikipedia.org/wiki/Sixel) or
+[Unicode Block Elements](https://en.wikipedia.org/wiki/Block_Elements)
+format for
 text terminals, e.g., console, xterm (with `-ti 340` option to enable Sixel),
 [mlterm](http://sourceforge.net/projects/mlterm/),
 Windows command prompt and so on.
@@ -30,18 +32,7 @@ input (if no command-line argument) and encodes it to a QR code.
 
 ```console
 $ qrc --help
-Usage: qrc [OPTIONS] [TEXT]
-
-Options:
-  -h, --help
-    Show this help message
-  -i, --invert
-    Invert color
-
-Text examples:
-  http://www.example.jp/
-  MAILTO:foobar@example.jp
-  WIFI:S:myssid;T:WPA;P:pass123;;
+...
 $ qrc https://fumiyas.github.io/
 ...
 $ qrc 'WIFI:S:Our-ssid;T:WPA;P:secret;;'
@@ -56,7 +47,7 @@ a terminal and it supports Sixel.
 Download
 ---------------------------------------------------------------------
 
-Binary files are here for Linux, Mac OS X and Windows:
+Binary files are here for Linux, macOS and Windows:
 
   * https://github.com/fumiyas/qrc/releases
 
@@ -86,13 +77,10 @@ TODO
 ----------------------------------------------------------------------
 
   * Add the following options:
-    * `--format <aa|sixel>`
     * `--aa-color-scheme <ansi|windows>`
     * `--foreground-color R:G:B`
     * `--background-color R:G:B`
     * `--margin-color R:G:B`
-    * `--margin-size N`
-    * `--input-encoding E`
   * Timeout for tty.GetDeviceAttributes1()
 
 Contributors
@@ -111,4 +99,3 @@ Similar products
     * <https://gist.github.com/saitoha/10483508> (qrcode-sixel)
     * <https://gist.github.com/fumiyas/10490722> (qrcode-sixel)
     * <https://github.com/fumiyas/home-commands/blob/master/qrcode-aa>
-

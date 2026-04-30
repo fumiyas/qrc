@@ -23,7 +23,7 @@ import (
 // that share a color are coalesced; we therefore walk the byte stream,
 // track the current background color, and convert every 2 consecutive
 // spaces into one module of that color.
-func parseAA(t *testing.T, data []byte) [][]bool {
+func parseAA(t *testing.T, data []byte, border int) [][]bool {
 	t.Helper()
 
 	type pixel struct {
@@ -77,19 +77,19 @@ func parseAA(t *testing.T, data []byte) [][]bool {
 		rows = append(rows, current)
 	}
 
-	if len(rows) < 3 {
-		t.Fatalf("parseAA: too few rows: %d", len(rows))
+	if len(rows) < 2*border+1 {
+		t.Fatalf("parseAA: too few rows: %d (border=%d)", len(rows), border)
 	}
 	// Drop top/bottom margin rows.
-	dataRows := rows[1 : len(rows)-1]
+	dataRows := rows[border : len(rows)-border]
 
 	grid := make([][]bool, 0, len(dataRows))
 	for ri, r := range dataRows {
-		// Strip the 1-module (= 2 spaces) left and right white margins.
-		if len(r) < 6 {
+		// Strip the border-module (= 2*border spaces) left and right white margins.
+		if len(r) < 4*border {
 			t.Fatalf("parseAA: row %d too short (%d)", ri, len(r))
 		}
-		inner := r[2 : len(r)-2]
+		inner := r[2*border : len(r)-2*border]
 		if len(inner)%2 != 0 {
 			t.Fatalf("parseAA: row %d inner width %d not divisible by 2", ri, len(inner))
 		}
@@ -128,7 +128,7 @@ func containsParam(params, p string) bool {
 // as "#N!K~" or "#N~" (single sixel), with '~' meaning all six vertical
 // pixels are lit. We therefore only need to walk per-band runs and
 // downsample by 6 horizontally.
-func parseSixel(t *testing.T, data []byte) [][]bool {
+func parseSixel(t *testing.T, data []byte, border int) [][]bool {
 	t.Helper()
 
 	// Locate end of introducer (\x1BPq"...) up to first non-parameter character.
@@ -196,20 +196,20 @@ func parseSixel(t *testing.T, data []byte) [][]bool {
 	if len(current) > 0 {
 		bands = append(bands, downsample6(t, current))
 	}
-	if len(bands) < 3 {
-		t.Fatalf("parseSixel: too few bands: %d", len(bands))
+	if len(bands) < 2*border+1 {
+		t.Fatalf("parseSixel: too few bands: %d (border=%d)", len(bands), border)
 	}
 	// Drop the top and bottom all-white margin bands.
-	dataBands := bands[1 : len(bands)-1]
-	// Strip the 1-module left and right margins.
+	dataBands := bands[border : len(bands)-border]
+	// Strip the border-module left and right margins.
 	grid := make([][]bool, 0, len(dataBands))
 	for bi, b := range dataBands {
-		if len(b) < 3 {
+		if len(b) < 2*border+1 {
 			t.Fatalf("parseSixel: band %d too narrow (%d)", bi, len(b))
 		}
-		row := make([]bool, len(b)-2)
+		row := make([]bool, len(b)-2*border)
 		for i := range row {
-			row[i] = b[i+1]
+			row[i] = b[i+border]
 		}
 		grid = append(grid, row)
 	}
@@ -317,7 +317,7 @@ func TestRoundTripAA(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
 			PrintAA(&buf, grid, false, 1, 1)
-			parsed := parseAA(t, buf.Bytes())
+			parsed := parseAA(t, buf.Bytes(), 1)
 			got := decodeQR(t, parsed)
 			if got != in.text {
 				t.Errorf("AA round-trip mismatch: got %q, want %q", got, in.text)
@@ -333,7 +333,7 @@ func TestRoundTripSixel(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
 			PrintSixel(&buf, grid, false, 1, 1)
-			parsed := parseSixel(t, buf.Bytes())
+			parsed := parseSixel(t, buf.Bytes(), 1)
 			got := decodeQR(t, parsed)
 			if got != in.text {
 				t.Errorf("Sixel round-trip mismatch: got %q, want %q", got, in.text)
@@ -350,7 +350,7 @@ func TestRoundTripSixel(t *testing.T) {
 // PrintUnicode renders LIGHT modules as block characters and DARK
 // modules as spaces (see the comment in PrintUnicode), so this parser
 // inverts that mapping when filling in the boolean grid.
-func parseUnicode(t *testing.T, data []byte) [][]bool {
+func parseUnicode(t *testing.T, data []byte, border int) [][]bool {
 	t.Helper()
 	lines := bytes.Split(bytes.TrimRight(data, "\n"), []byte("\n"))
 	if len(lines) < 2 {
@@ -398,12 +398,12 @@ func parseUnicode(t *testing.T, data []byte) [][]bool {
 		t.Fatalf("parseUnicode: no data rows found")
 	}
 	dataRows := modules[top:bot]
-	if len(dataRows[0]) < 3 {
-		t.Fatalf("parseUnicode: row too narrow: %d", len(dataRows[0]))
+	if len(dataRows) == 0 || len(dataRows[0]) < 2*border {
+		t.Fatalf("parseUnicode: row too narrow: %d (border=%d)", len(dataRows[0]), border)
 	}
 	grid := make([][]bool, len(dataRows))
 	for i, row := range dataRows {
-		grid[i] = row[1 : len(row)-1]
+		grid[i] = row[border : len(row)-border]
 	}
 	return grid
 }
@@ -415,7 +415,7 @@ func TestRoundTripUnicode(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
 			PrintUnicode(&buf, grid, false, 1, 1)
-			parsed := parseUnicode(t, buf.Bytes())
+			parsed := parseUnicode(t, buf.Bytes(), 1)
 			got := decodeQR(t, parsed)
 			if got != in.text {
 				t.Errorf("Unicode round-trip mismatch: got %q, want %q", got, in.text)
@@ -548,3 +548,65 @@ func TestPrintUnicodeScale(t *testing.T) {
 }
 
 func utf8RuneCount(b []byte) int { return len([]rune(string(b))) }
+
+// TestPrintAABorder verifies that --border N changes the output
+// dimensions linearly, that border=0 produces no quiet zone, and that
+// the QR code remains decodable for both border=0 and border=2.
+func TestPrintAABorder(t *testing.T) {
+	in := testInputs[0]
+	grid := encode(t, in.text)
+	for _, border := range []int{0, 2} {
+		var buf bytes.Buffer
+		PrintAA(&buf, grid, false, 1, border)
+		// Line count = size + 2*border.
+		if got, want := countNewlines(buf.Bytes()), grid.Size+2*border; got != want {
+			t.Errorf("AA border=%d line count = %d, want %d", border, got, want)
+		}
+		parsed := parseAA(t, buf.Bytes(), border)
+		got := decodeQR(t, parsed)
+		if got != in.text {
+			t.Errorf("AA border=%d round-trip mismatch: got %q, want %q", border, got, in.text)
+		}
+	}
+}
+
+// TestPrintSixelBorder verifies the same for the sixel format. The
+// number of bands must equal size + 2*border.
+func TestPrintSixelBorder(t *testing.T) {
+	in := testInputs[0]
+	grid := encode(t, in.text)
+	for _, border := range []int{0, 2} {
+		var buf bytes.Buffer
+		PrintSixel(&buf, grid, false, 1, border)
+		bands := bytes.Count(buf.Bytes(), []byte{'-'}) + 1
+		if got, want := bands, grid.Size+2*border; got != want {
+			t.Errorf("Sixel border=%d band count = %d, want %d", border, got, want)
+		}
+		parsed := parseSixel(t, buf.Bytes(), border)
+		got := decodeQR(t, parsed)
+		if got != in.text {
+			t.Errorf("Sixel border=%d round-trip mismatch: got %q, want %q", border, got, in.text)
+		}
+	}
+}
+
+// TestPrintUnicodeBorder verifies the same for the unicode format.
+// Because each character row spans two modules, the bottom may be
+// padded by one extra module when (size + 2*border) is odd.
+func TestPrintUnicodeBorder(t *testing.T) {
+	in := testInputs[0]
+	grid := encode(t, in.text)
+	for _, border := range []int{0, 2} {
+		var buf bytes.Buffer
+		PrintUnicode(&buf, grid, false, 1, border)
+		wantRows := (grid.Size + 2*border + 1) / 2
+		if got := countNewlines(buf.Bytes()); got != wantRows {
+			t.Errorf("Unicode border=%d line count = %d, want %d", border, got, wantRows)
+		}
+		parsed := parseUnicode(t, buf.Bytes(), border)
+		got := decodeQR(t, parsed)
+		if got != in.text {
+			t.Errorf("Unicode border=%d round-trip mismatch: got %q, want %q", border, got, in.text)
+		}
+	}
+}

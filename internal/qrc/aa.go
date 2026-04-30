@@ -17,7 +17,14 @@ const (
 	ansiWhite = "\x1b[0;30;47m" // black foreground on white background
 )
 
-func PrintAA(wIn io.Writer, code *qr.Code, inverse bool) {
+// PrintAA renders the QR code using ANSI background-color escape
+// sequences and pairs of spaces. Each module is rendered as 2*scale
+// horizontal spaces, and each module row is repeated scale times
+// vertically. scale must be >= 1.
+func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
+	if scale < 1 {
+		scale = 1
+	}
 	// Buffering required for Windows (go-colorable) support
 	w := bufio.NewWriterSize(wIn, 1024)
 
@@ -29,29 +36,37 @@ func PrintAA(wIn io.Writer, code *qr.Code, inverse bool) {
 	}
 
 	size := code.Size
-	line := white + fmt.Sprintf("%*s", size*2+2, "") + reset + "\n"
+	moduleSpaces := 2 * scale
+	pad := fmt.Sprintf("%*s", scale, "")
+	margin := white + fmt.Sprintf("%*s", (size*2+2)*scale, "") + reset + "\n"
 
-	fmt.Fprint(w, line)
-	for y := 0; y < size; y++ {
-		fmt.Fprint(w, white, " ")
-		colorPrev := white
-		for x := 0; x < size; x++ {
-			if code.Black(x, y) {
-				if colorPrev != black {
-					fmt.Fprint(w, black)
-					colorPrev = black
-				}
-			} else {
-				if colorPrev != white {
-					fmt.Fprint(w, white)
-					colorPrev = white
-				}
-			}
-			fmt.Fprint(w, "  ")
-		}
-		fmt.Fprint(w, white, " ", reset, "\n")
-		w.Flush()
+	for i := 0; i < scale; i++ {
+		fmt.Fprint(w, margin)
 	}
-	fmt.Fprint(w, line)
+	for y := 0; y < size; y++ {
+		for r := 0; r < scale; r++ {
+			fmt.Fprint(w, white, pad)
+			colorPrev := white
+			for x := 0; x < size; x++ {
+				if code.Black(x, y) {
+					if colorPrev != black {
+						fmt.Fprint(w, black)
+						colorPrev = black
+					}
+				} else {
+					if colorPrev != white {
+						fmt.Fprint(w, white)
+						colorPrev = white
+					}
+				}
+				fmt.Fprint(w, fmt.Sprintf("%*s", moduleSpaces, ""))
+			}
+			fmt.Fprint(w, white, pad, reset, "\n")
+			w.Flush()
+		}
+	}
+	for i := 0; i < scale; i++ {
+		fmt.Fprint(w, margin)
+	}
 	w.Flush()
 }

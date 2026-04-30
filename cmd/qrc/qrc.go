@@ -18,6 +18,7 @@ type cmdOptions struct {
 	Inverse      bool   `short:"i" long:"invert" description:"invert color"`
 	OutputFormat string `short:"f" long:"output-format" choice:"auto" choice:"ansi" choice:"sixel" choice:"unicode" default:"auto" description:"output format"`
 	ECLevel      string `short:"l" long:"ec-level" choice:"L" choice:"M" choice:"Q" choice:"H" default:"L" description:"QR error correction level"`
+	Scale        int    `short:"s" long:"scale" default:"1" description:"integer scale factor (>= 1)"`
 }
 
 func showHelp() {
@@ -40,6 +41,8 @@ Options:
       M  Medium   (~15%)
       Q  Quartile (~25%)
       H  High     (~30%)
+  -s, --scale=<N>
+    Integer scale factor (default: 1, must be >= 1)
 
 Text examples:
   http://www.example.jp/
@@ -120,13 +123,19 @@ func main() {
 		return
 	}
 
+	if opts.Scale < 1 {
+		pErr("invalid --scale: %d (must be >= 1)\n", opts.Scale)
+		ret = 1
+		return
+	}
+
 	switch resolveOutputFormat(opts.OutputFormat, os.Stdout) {
 	case "sixel":
-		qrc.PrintSixel(os.Stdout, code, opts.Inverse)
+		qrc.PrintSixel(os.Stdout, code, opts.Inverse, opts.Scale)
 	case "unicode":
-		qrc.PrintUnicode(os.Stdout, code, opts.Inverse)
+		qrc.PrintUnicode(os.Stdout, code, opts.Inverse, opts.Scale)
 	case "ansi":
 		stdout := colorable.NewColorableStdout()
-		qrc.PrintAA(stdout, code, opts.Inverse)
+		qrc.PrintAA(stdout, code, opts.Inverse, opts.Scale)
 	}
 }

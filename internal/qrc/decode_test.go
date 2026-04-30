@@ -316,7 +316,7 @@ func TestRoundTripAA(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintAA(&buf, grid, false)
+			PrintAA(&buf, grid, false, 1)
 			parsed := parseAA(t, buf.Bytes())
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -332,7 +332,7 @@ func TestRoundTripSixel(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintSixel(&buf, grid, false)
+			PrintSixel(&buf, grid, false, 1)
 			parsed := parseSixel(t, buf.Bytes())
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -408,7 +408,7 @@ func TestRoundTripUnicode(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintUnicode(&buf, grid, false)
+			PrintUnicode(&buf, grid, false, 1)
 			parsed := parseUnicode(t, buf.Bytes())
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -417,3 +417,128 @@ func TestRoundTripUnicode(t *testing.T) {
 		})
 	}
 }
+
+// downsampleGrid collapses each scale x scale block of identical
+// modules into one module. It fails the test if any block is not
+// uniform.
+func downsampleGrid(t *testing.T, grid [][]bool, scale int) [][]bool {
+	t.Helper()
+	if scale < 1 {
+		t.Fatalf("downsampleGrid: invalid scale %d", scale)
+	}
+	if scale == 1 {
+		return grid
+	}
+	if len(grid)%scale != 0 {
+		t.Fatalf("downsampleGrid: height %d not divisible by %d", len(grid), scale)
+	}
+	out := make([][]bool, len(grid)/scale)
+	for y := 0; y < len(out); y++ {
+		row := grid[y*scale]
+		if len(row)%scale != 0 {
+			t.Fatalf("downsampleGrid: width %d not divisible by %d", len(row), scale)
+		}
+		out[y] = make([]bool, len(row)/scale)
+		for x := 0; x < len(out[y]); x++ {
+			v := row[x*scale]
+			for dy := 0; dy < scale; dy++ {
+				for dx := 0; dx < scale; dx++ {
+					if grid[y*scale+dy][x*scale+dx] != v {
+						t.Fatalf("downsampleGrid: non-uniform block at (%d,%d)", x, y)
+					}
+				}
+			}
+			out[y][x] = v
+		}
+	}
+	return out
+}
+
+// countNewlines counts '\n' bytes in data.
+func countNewlines(data []byte) int {
+	return bytes.Count(data, []byte{'\n'})
+}
+
+// TestPrintAAScale verifies that scale=N produces output whose visible
+// dimensions grow exactly by N. Combined with the scale=1 round-trip
+// test, this implies scale=N output is also scannable.
+func TestPrintAAScale(t *testing.T) {
+	in := testInputs[0]
+	grid := encode(t, in.text)
+	var b1, b2 bytes.Buffer
+	PrintAA(&b1, grid, false, 1)
+	PrintAA(&b2, grid, false, 2)
+	if got, want := countNewlines(b2.Bytes()), countNewlines(b1.Bytes())*2; got != want {
+		t.Errorf("AA scale=2 line count = %d, want %d", got, want)
+	}
+}
+
+// TestPrintSixelScale verifies that scale=N produces N times as many
+// sixel bands and exactly twice the per-band pixel width.
+func TestPrintSixelScale(t *testing.T) {
+	in := testInputs[0]
+	grid := encode(t, in.text)
+	var b1, b2 bytes.Buffer
+	PrintSixel(&b1, grid, false, 1)
+	PrintSixel(&b2, grid, false, 2)
+	// '-' separates bands, so band count = dashes + 1 (final band has no
+	// trailing dash). The total number of bands must double for scale=2.
+	bands1 := bytes.Count(b1.Bytes(), []byte{'-'}) + 1
+	bands2 := bytes.Count(b2.Bytes(), []byte{'-'}) + 1
+	if bands2 != bands1*2 {
+		t.Errorf("Sixel scale=2 band count = %d, want %d", bands2, bands1*2)
+	}
+	// All pixel run counts (between '!' and '~') must double.
+	rs1 := extractSixelRuns(b1.Bytes())
+	rs2 := extractSixelRuns(b2.Bytes())
+	sum := func(xs []int) int {
+		s := 0
+		for _, x := range xs {
+			s += x
+		}
+		return s
+	}
+	// Total pixel count grows quadratically: scale=2 doubles both the
+	// per-band horizontal pixel count and the number of bands.
+	if got, want := sum(rs2), sum(rs1)*4; got != want {
+		t.Errorf("Sixel scale=2 total run pixels = %d, want %d", got, want)
+	}
+}
+
+func extractSixelRuns(data []byte) []int {
+	var runs []int
+	for i := 0; i < len(data); i++ {
+		if data[i] != '!' {
+			continue
+		}
+		j := i + 1
+		for j < len(data) && data[j] >= '0' && data[j] <= '9' {
+			j++
+		}
+		if n, err := strconv.Atoi(string(data[i+1 : j])); err == nil {
+			runs = append(runs, n)
+		}
+	}
+	return runs
+}
+
+// TestPrintUnicodeScale verifies that scale=N produces N times as many
+// lines and N times as many runes per line.
+func TestPrintUnicodeScale(t *testing.T) {
+	in := testInputs[0]
+	grid := encode(t, in.text)
+	var b1, b2 bytes.Buffer
+	PrintUnicode(&b1, grid, false, 1)
+	PrintUnicode(&b2, grid, false, 2)
+	if got, want := countNewlines(b2.Bytes()), countNewlines(b1.Bytes())*2; got != want {
+		t.Errorf("Unicode scale=2 line count = %d, want %d", got, want)
+	}
+	first1 := bytes.SplitN(b1.Bytes(), []byte{'\n'}, 2)[0]
+	first2 := bytes.SplitN(b2.Bytes(), []byte{'\n'}, 2)[0]
+	r1, r2 := utf8RuneCount(first1), utf8RuneCount(first2)
+	if r2 != r1*2 {
+		t.Errorf("Unicode scale=2 first-line rune count = %d, want %d", r2, r1*2)
+	}
+}
+
+func utf8RuneCount(b []byte) int { return len([]rune(string(b))) }

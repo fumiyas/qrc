@@ -21,10 +21,16 @@ const (
 // PrintUnicode renders the QR code using Unicode half-block characters,
 // packing two vertically-adjacent modules into a single character cell.
 //
+// Each cell is repeated horizontally scale times and vertically scale
+// times. scale must be >= 1.
+//
 // A 1-module quiet zone is added around the code; when the resulting
 // height is odd, an extra blank module row is appended at the bottom so
 // that the output remains an integer number of half-block rows.
-func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool) {
+func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
+	if scale < 1 {
+		scale = 1
+	}
 	w := bufio.NewWriterSize(wIn, 1024)
 	size := code.Size
 
@@ -48,17 +54,19 @@ func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool) {
 		}
 	}
 
-	// One quiet module on each side. The total module height (size + 2)
-	// is rounded up to the next even number so we always emit complete
-	// half-block rows.
 	totalRows := (size + 3) / 2
 	for r := 0; r < totalRows; r++ {
 		yTop := r*2 - 1
 		yBot := yTop + 1
-		for x := -1; x <= size; x++ {
-			fmt.Fprintf(w, "%c", cell(isDark(x, yTop), isDark(x, yBot)))
+		for vr := 0; vr < scale; vr++ {
+			for x := -1; x <= size; x++ {
+				ch := cell(isDark(x, yTop), isDark(x, yBot))
+				for hr := 0; hr < scale; hr++ {
+					fmt.Fprintf(w, "%c", ch)
+				}
+			}
+			fmt.Fprintln(w)
 		}
-		fmt.Fprintln(w)
 	}
 	w.Flush()
 }

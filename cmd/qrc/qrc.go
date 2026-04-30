@@ -7,7 +7,7 @@ import (
 
 	"github.com/jessevdk/go-flags"
 	"github.com/mattn/go-colorable"
-	"github.com/qpliu/qrencode-go/qrencode"
+	"rsc.io/qr"
 
 	"github.com/fumiyas/qrc/internal/qrc"
 	"github.com/fumiyas/qrc/internal/tty"
@@ -71,7 +71,7 @@ func main() {
 		text = string(textBytes)
 	}
 
-	grid, err := qrencode.Encode(text, qrencode.ECLevelL)
+	code, err := qr.Encode(text, qr.L)
 	if err != nil {
 		pErr("encode failed: %v\n", err)
 		ret = 1
@@ -80,9 +80,9 @@ func main() {
 
 	da1, err := tty.GetDeviceAttributes1(os.Stdout)
 	if err == nil && da1[tty.DA1_SIXEL] {
-		qrc.PrintSixel(os.Stdout, grid, opts.Inverse)
+		qrc.PrintSixel(os.Stdout, code, opts.Inverse)
 	} else {
 		stdout := colorable.NewColorableStdout()
-		qrc.PrintAA(stdout, grid, opts.Inverse)
+		qrc.PrintAA(stdout, code, opts.Inverse)
 	}
 }

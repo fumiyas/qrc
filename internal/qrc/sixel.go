@@ -2,11 +2,12 @@ package qrc
 
 import (
 	"fmt"
-	"github.com/qpliu/qrencode-go/qrencode"
 	"io"
+
+	"rsc.io/qr"
 )
 
-func PrintSixel(w io.Writer, grid *qrencode.BitGrid, inverse bool) {
+func PrintSixel(w io.Writer, code *qr.Code, inverse bool) {
 	black := "0"
 	white := "1"
 
@@ -20,18 +21,17 @@ func PrintSixel(w io.Writer, grid *qrencode.BitGrid, inverse bool) {
 		black, white = white, black
 	}
 
-	height := grid.Height()
-	width := grid.Width()
-	line := "#" + white + "!" + fmt.Sprintf("%d", (width+2)*6) + "~"
+	size := code.Size
+	line := "#" + white + "!" + fmt.Sprintf("%d", (size+2)*6) + "~"
 
 	fmt.Fprint(w, line, "-")
-	for y := 0; y < height; y++ {
+	for y := 0; y < size; y++ {
 		fmt.Fprint(w, "#", white)
 		color := white
 		repeat := 6
 		var current string
-		for x := 0; x < width; x++ {
-			if grid.Get(x, y) {
+		for x := 0; x < size; x++ {
+			if code.Black(x, y) {
 				current = black
 			} else {
 				current = white

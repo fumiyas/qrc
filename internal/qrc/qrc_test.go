@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/qpliu/qrencode-go/qrencode"
+	"rsc.io/qr"
 )
 
 var update = flag.Bool("update", false, "update golden files")
@@ -24,13 +24,13 @@ var testInputs = []struct {
 	{"wifi", "WIFI:S:Our-ssid;T:WPA;P:secret;;"},
 }
 
-func encode(t *testing.T, text string) *qrencode.BitGrid {
+func encode(t *testing.T, text string) *qr.Code {
 	t.Helper()
-	grid, err := qrencode.Encode(text, qrencode.ECLevelL)
+	code, err := qr.Encode(text, qr.L)
 	if err != nil {
-		t.Fatalf("qrencode.Encode(%q): %v", text, err)
+		t.Fatalf("qr.Encode(%q): %v", text, err)
 	}
-	return grid
+	return code
 }
 
 func checkGolden(t *testing.T, name string, got []byte) {

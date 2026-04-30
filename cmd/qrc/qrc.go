@@ -1,15 +1,16 @@
 package main
 
 import (
-	"github.com/qpliu/qrencode-go/qrencode"
 	"fmt"
-	"github.com/jessevdk/go-flags"
-	"github.com/mattn/go-colorable"
 	"io"
 	"os"
 
+	"github.com/jessevdk/go-flags"
+	"github.com/mattn/go-colorable"
+	"github.com/qpliu/qrencode-go/qrencode"
+
+	"github.com/fumiyas/qrc/internal/qrc"
 	"github.com/fumiyas/qrc/internal/tty"
-	"github.com/fumiyas/qrc/lib"
 )
 
 type cmdOptions struct {

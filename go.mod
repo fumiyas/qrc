@@ -6,7 +6,6 @@ require (
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/makiuchi-d/gozxing v0.1.1
 	github.com/mattn/go-colorable v0.1.14
-	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
 	github.com/qpliu/qrencode-go v0.0.0-20170225035013-ad8353b4581f
 )
 

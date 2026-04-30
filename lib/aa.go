@@ -2,19 +2,28 @@ package qrc
 
 import (
 	"bufio"
-	"github.com/qpliu/qrencode-go/qrencode"
 	"fmt"
-	"github.com/mgutz/ansi"
 	"io"
+
+	"github.com/qpliu/qrencode-go/qrencode"
+)
+
+// ANSI SGR sequences. The exact byte sequences are kept identical to
+// the previous github.com/mgutz/ansi based implementation so that the
+// rendered output is unchanged.
+const (
+	ansiReset = "\x1b[0m"
+	ansiBlack = "\x1b[0;30;40m" // black foreground on black background
+	ansiWhite = "\x1b[0;30;47m" // black foreground on white background
 )
 
 func PrintAA(w_in io.Writer, grid *qrencode.BitGrid, inverse bool) {
 	// Buffering required for Windows (go-colorable) support
 	w := bufio.NewWriterSize(w_in, 1024)
 
-	reset := ansi.ColorCode("reset")
-	black := ansi.ColorCode(":black")
-	white := ansi.ColorCode(":white")
+	reset := ansiReset
+	black := ansiBlack
+	white := ansiWhite
 	if inverse {
 		black, white = white, black
 	}

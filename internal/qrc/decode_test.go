@@ -345,7 +345,11 @@ func TestRoundTripSixel(t *testing.T) {
 // parseUnicode reverses PrintUnicode's output back into a 2D module
 // grid. PrintUnicode packs two vertically-adjacent modules into one
 // half-block character; we therefore expand each line of runes into
-// two module rows and then strip the surrounding all-light quiet zone.
+// two module rows and then strip the surrounding quiet zone.
+//
+// PrintUnicode renders LIGHT modules as block characters and DARK
+// modules as spaces (see the comment in PrintUnicode), so this parser
+// inverts that mapping when filling in the boolean grid.
 func parseUnicode(t *testing.T, data []byte) [][]bool {
 	t.Helper()
 	lines := bytes.Split(bytes.TrimRight(data, "\n"), []byte("\n"))
@@ -358,15 +362,17 @@ func parseUnicode(t *testing.T, data []byte) [][]bool {
 		top := make([]bool, len(runes))
 		bot := make([]bool, len(runes))
 		for i, r := range runes {
+			// dark = space, light = block character; here `true` means
+			// "QR dark module".
 			switch r {
 			case uBlockNone:
+				top[i] = true
+				bot[i] = true
 			case uBlockUpper:
-				top[i] = true
+				bot[i] = true
 			case uBlockLower:
-				bot[i] = true
-			case uBlockFull:
 				top[i] = true
-				bot[i] = true
+			case uBlockFull:
 			default:
 				t.Fatalf("parseUnicode: unexpected rune %q at line %d col %d", r, li, i)
 			}

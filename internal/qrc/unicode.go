@@ -34,6 +34,15 @@ func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
 	w := bufio.NewWriterSize(wIn, 1024)
 	size := code.Size
 
+	// Unicode half-block characters paint with the terminal's foreground
+	// color, which on the typical dark-themed terminal appears bright.
+	// To keep the visual appearance consistent with the ansi/sixel
+	// formats (dark QR modules look dark), we treat block characters as
+	// LIGHT modules and spaces as DARK modules — i.e. internally invert
+	// the requested mode. The user-facing --invert flag still flips on
+	// top of that, so -i restores the alternate look.
+	inverse = !inverse
+
 	isDark := func(x, y int) bool {
 		if x < 0 || x >= size || y < 0 || y >= size {
 			return inverse

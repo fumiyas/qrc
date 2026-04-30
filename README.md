@@ -63,10 +63,23 @@ Binary files are here for Linux, Mac OS X and Windows:
 Build from source codes
 ---------------------------------------------------------------------
 
-If you have Go language environment, try the following:
+Requires Go 1.21 or later.
+
+Install the latest released version of `qrc` directly with `go install`:
 
 ```console
-$ go get github.com/fumiyas/qrc/cmd/qrc
+$ go install github.com/fumiyas/qrc/cmd/qrc@latest
+```
+
+Or, build from a local clone:
+
+```console
+$ git clone https://github.com/fumiyas/qrc.git
+$ cd qrc
+$ make build       # build the qrc binary in the working tree
+$ make test        # run unit tests
+$ make vet         # run go vet
+$ make cross       # cross-compile for Linux, macOS and Windows
 ```
 
 TODO

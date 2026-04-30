@@ -54,7 +54,6 @@ func checkGolden(t *testing.T, name string, got []byte) {
 
 func TestPrintAAGolden(t *testing.T) {
 	for _, in := range testInputs {
-		in := in
 		for _, inv := range []bool{false, true} {
 			inv := inv
 			suffix := "normal"
@@ -73,7 +72,6 @@ func TestPrintAAGolden(t *testing.T) {
 
 func TestPrintSixelGolden(t *testing.T) {
 	for _, in := range testInputs {
-		in := in
 		for _, inv := range []bool{false, true} {
 			inv := inv
 			suffix := "normal"
@@ -92,7 +90,6 @@ func TestPrintSixelGolden(t *testing.T) {
 
 func TestPrintUnicodeGolden(t *testing.T) {
 	for _, in := range testInputs {
-		in := in
 		for _, inv := range []bool{false, true} {
 			inv := inv
 			suffix := "normal"

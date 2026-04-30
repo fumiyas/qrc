@@ -312,7 +312,6 @@ func decodeQR(t *testing.T, grid [][]bool) string {
 
 func TestRoundTripAA(t *testing.T) {
 	for _, in := range testInputs {
-		in := in
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
@@ -328,7 +327,6 @@ func TestRoundTripAA(t *testing.T) {
 
 func TestRoundTripSixel(t *testing.T) {
 	for _, in := range testInputs {
-		in := in
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
@@ -410,7 +408,6 @@ func parseUnicode(t *testing.T, data []byte, border int) [][]bool {
 
 func TestRoundTripUnicode(t *testing.T) {
 	for _, in := range testInputs {
-		in := in
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer

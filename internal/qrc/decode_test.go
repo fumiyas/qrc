@@ -85,11 +85,11 @@ func parseAA(t *testing.T, data []byte) [][]bool {
 
 	grid := make([][]bool, 0, len(dataRows))
 	for ri, r := range dataRows {
-		// Strip 1-char left and right white margins.
-		if len(r) < 4 {
+		// Strip the 1-module (= 2 spaces) left and right white margins.
+		if len(r) < 6 {
 			t.Fatalf("parseAA: row %d too short (%d)", ri, len(r))
 		}
-		inner := r[1 : len(r)-1]
+		inner := r[2 : len(r)-2]
 		if len(inner)%2 != 0 {
 			t.Fatalf("parseAA: row %d inner width %d not divisible by 2", ri, len(inner))
 		}

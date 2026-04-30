@@ -20,7 +20,8 @@ const (
 // PrintAA renders the QR code using ANSI background-color escape
 // sequences and pairs of spaces. Each module is rendered as 2*scale
 // horizontal spaces, and each module row is repeated scale times
-// vertically. scale must be >= 1.
+// vertically. A 1-module quiet zone is added on all four sides so the
+// horizontal and vertical margins match. scale must be >= 1.
 func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
 	if scale < 1 {
 		scale = 1
@@ -37,8 +38,8 @@ func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
 
 	size := code.Size
 	moduleSpaces := 2 * scale
-	pad := fmt.Sprintf("%*s", scale, "")
-	margin := white + fmt.Sprintf("%*s", (size*2+2)*scale, "") + reset + "\n"
+	pad := fmt.Sprintf("%*s", moduleSpaces, "")
+	margin := white + fmt.Sprintf("%*s", (size+2)*moduleSpaces, "") + reset + "\n"
 
 	for i := 0; i < scale; i++ {
 		fmt.Fprint(w, margin)

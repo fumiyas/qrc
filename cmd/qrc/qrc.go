@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/jessevdk/go-flags"
 	"github.com/mattn/go-colorable"
-	"io/ioutil"
+	"io"
 	"os"
 
 	"github.com/fumiyas/qrc/internal/tty"
@@ -61,7 +61,7 @@ func main() {
 	if len(args) == 1 {
 		text = args[0]
 	} else {
-		text_bytes, err := ioutil.ReadAll(os.Stdin)
+		text_bytes, err := io.ReadAll(os.Stdin)
 		if err != nil {
 			pErr("read from stdin failed: %v\n", err)
 			ret = 1

@@ -85,7 +85,7 @@ func qrLevel(s string) qr.Level {
 	}
 }
 
-func pErr(format string, a ...interface{}) {
+func pErr(format string, a ...any) {
 	fmt.Fprint(os.Stderr, os.Args[0], ": ")
 	fmt.Fprintf(os.Stderr, format, a...)
 }

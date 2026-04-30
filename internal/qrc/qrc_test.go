@@ -89,3 +89,22 @@ func TestPrintSixelGolden(t *testing.T) {
 		}
 	}
 }
+
+func TestPrintUnicodeGolden(t *testing.T) {
+	for _, in := range testInputs {
+		in := in
+		for _, inv := range []bool{false, true} {
+			inv := inv
+			suffix := "normal"
+			if inv {
+				suffix = "invert"
+			}
+			t.Run(in.name+"_"+suffix, func(t *testing.T) {
+				grid := encode(t, in.text)
+				var buf bytes.Buffer
+				PrintUnicode(&buf, grid, inv)
+				checkGolden(t, "unicode_"+in.name+"_"+suffix, buf.Bytes())
+			})
+		}
+	}
+}

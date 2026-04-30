@@ -16,7 +16,7 @@ import (
 type cmdOptions struct {
 	Help         bool   `short:"h" long:"help" description:"show this help message"`
 	Inverse      bool   `short:"i" long:"invert" description:"invert color"`
-	OutputFormat string `short:"f" long:"output-format" choice:"auto" choice:"ansi" choice:"sixel" default:"auto" description:"output format"`
+	OutputFormat string `short:"f" long:"output-format" choice:"auto" choice:"ansi" choice:"sixel" choice:"unicode" default:"auto" description:"output format"`
 }
 
 func showHelp() {
@@ -27,11 +27,12 @@ Options:
     Show this help message
   -i, --invert
     Invert color
-  -f, --output-format=<auto|ansi|sixel>
+  -f, --output-format=<auto|ansi|sixel|unicode>
     Output format (default: auto)
-      auto   Sixel if the terminal supports it, otherwise ansi
-      ansi   ANSI background color escape sequences
-      sixel  Sixel graphics
+      auto     Sixel if the terminal supports it, otherwise ansi
+      ansi     ANSI background color escape sequences
+      sixel    Sixel graphics
+      unicode  Unicode half-block characters (▀ ▄ █)
 
 Text examples:
   http://www.example.jp/
@@ -101,6 +102,8 @@ func main() {
 	switch resolveOutputFormat(opts.OutputFormat, os.Stdout) {
 	case "sixel":
 		qrc.PrintSixel(os.Stdout, code, opts.Inverse)
+	case "unicode":
+		qrc.PrintUnicode(os.Stdout, code, opts.Inverse)
 	case "ansi":
 		stdout := colorable.NewColorableStdout()
 		qrc.PrintAA(stdout, code, opts.Inverse)

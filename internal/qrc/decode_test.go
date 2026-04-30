@@ -341,3 +341,79 @@ func TestRoundTripSixel(t *testing.T) {
 		})
 	}
 }
+
+// parseUnicode reverses PrintUnicode's output back into a 2D module
+// grid. PrintUnicode packs two vertically-adjacent modules into one
+// half-block character; we therefore expand each line of runes into
+// two module rows and then strip the surrounding all-light quiet zone.
+func parseUnicode(t *testing.T, data []byte) [][]bool {
+	t.Helper()
+	lines := bytes.Split(bytes.TrimRight(data, "\n"), []byte("\n"))
+	if len(lines) < 2 {
+		t.Fatalf("parseUnicode: too few lines: %d", len(lines))
+	}
+	var modules [][]bool
+	for li, line := range lines {
+		runes := []rune(string(line))
+		top := make([]bool, len(runes))
+		bot := make([]bool, len(runes))
+		for i, r := range runes {
+			switch r {
+			case uBlockNone:
+			case uBlockUpper:
+				top[i] = true
+			case uBlockLower:
+				bot[i] = true
+			case uBlockFull:
+				top[i] = true
+				bot[i] = true
+			default:
+				t.Fatalf("parseUnicode: unexpected rune %q at line %d col %d", r, li, i)
+			}
+		}
+		modules = append(modules, top, bot)
+	}
+	allFalse := func(row []bool) bool {
+		for _, v := range row {
+			if v {
+				return false
+			}
+		}
+		return true
+	}
+	top, bot := 0, len(modules)
+	for top < bot && allFalse(modules[top]) {
+		top++
+	}
+	for bot > top && allFalse(modules[bot-1]) {
+		bot--
+	}
+	if bot <= top {
+		t.Fatalf("parseUnicode: no data rows found")
+	}
+	dataRows := modules[top:bot]
+	if len(dataRows[0]) < 3 {
+		t.Fatalf("parseUnicode: row too narrow: %d", len(dataRows[0]))
+	}
+	grid := make([][]bool, len(dataRows))
+	for i, row := range dataRows {
+		grid[i] = row[1 : len(row)-1]
+	}
+	return grid
+}
+
+func TestRoundTripUnicode(t *testing.T) {
+	for _, in := range testInputs {
+		in := in
+		t.Run(in.name, func(t *testing.T) {
+			grid := encode(t, in.text)
+			var buf bytes.Buffer
+			PrintUnicode(&buf, grid, false)
+			parsed := parseUnicode(t, buf.Bytes())
+			got := decodeQR(t, parsed)
+			if got != in.text {
+				t.Errorf("Unicode round-trip mismatch: got %q, want %q", got, in.text)
+			}
+		})
+	}
+}

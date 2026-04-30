@@ -1,17 +1,32 @@
 GO=		go
-GOX=		gox
-
 GO_PACKAGE=	github.com/fumiyas/qrc/cmd/qrc
-CROSS_TARGETS=	linux/amd64 linux/386 darwin/amd64 windows/386
+
+CROSS_TARGETS=	linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64
 
 default: build
 
-get:
-	$(GO) get
+.PHONY: default build test vet fmt cross clean
 
 build:
-	$(GO) build cmd/qrc/qrc.go
+	$(GO) build ./cmd/qrc
+
+test:
+	$(GO) test ./...
+
+vet:
+	$(GO) vet ./...
+
+fmt:
+	$(GO) fmt ./...
 
 cross:
-	$(GOX) -osarch="$(CROSS_TARGETS)" $(GO_PACKAGE)
+	@for target in $(CROSS_TARGETS); do \
+		os=$${target%%/*}; arch=$${target##*/}; \
+		ext=; [ "$$os" = "windows" ] && ext=.exe; \
+		out=qrc-$$os-$$arch$$ext; \
+		echo "==> $$out"; \
+		GOOS=$$os GOARCH=$$arch $(GO) build -o $$out $(GO_PACKAGE) || exit $$?; \
+	done
 
+clean:
+	rm -f qrc qrc-*-* qrc-*-*.exe

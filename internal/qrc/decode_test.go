@@ -350,12 +350,10 @@ func TestRoundTripSixel(t *testing.T) {
 // inverts that mapping when filling in the boolean grid.
 func parseUnicode(t *testing.T, data []byte, border int) [][]bool {
 	t.Helper()
-	lines := bytes.Split(bytes.TrimRight(data, "\n"), []byte("\n"))
-	if len(lines) < 2 {
-		t.Fatalf("parseUnicode: too few lines: %d", len(lines))
-	}
 	var modules [][]bool
-	for li, line := range lines {
+	li := 0
+	for line := range bytes.Lines(data) {
+		line = bytes.TrimRight(line, "\n")
 		runes := []rune(string(line))
 		top := make([]bool, len(runes))
 		bot := make([]bool, len(runes))
@@ -376,6 +374,10 @@ func parseUnicode(t *testing.T, data []byte, border int) [][]bool {
 			}
 		}
 		modules = append(modules, top, bot)
+		li++
+	}
+	if li < 2 {
+		t.Fatalf("parseUnicode: too few lines: %d", li)
 	}
 	allFalse := func(row []bool) bool {
 		for _, v := range row {

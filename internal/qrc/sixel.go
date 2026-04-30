@@ -1,8 +1,8 @@
 package qrc
 
 import (
-	"github.com/qpliu/qrencode-go/qrencode"
 	"fmt"
+	"github.com/qpliu/qrencode-go/qrencode"
 	"io"
 )
 

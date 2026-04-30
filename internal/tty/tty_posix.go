@@ -1,3 +1,4 @@
+//go:build !darwin && !windows && !freebsd && !netbsd && !openbsd
 // +build !darwin,!windows,!freebsd,!netbsd,!openbsd
 
 package tty

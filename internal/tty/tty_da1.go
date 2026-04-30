@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 package tty
@@ -38,7 +39,7 @@ const (
 	DA1_MAX                                 = 65
 )
 
-type DeviceAttributes1 [DA1_MAX+1]bool
+type DeviceAttributes1 [DA1_MAX + 1]bool
 
 func GetDeviceAttributes1(file *os.File) (DeviceAttributes1, error) {
 	var err error
@@ -58,7 +59,7 @@ func GetDeviceAttributes1(file *os.File) (DeviceAttributes1, error) {
 	if err != nil {
 		return da1, fmt.Errorf("cannot read DA1: %v", err)
 	}
-	if bytes.Compare(buf, []byte("\x1b[?")) != 0 {
+	if !bytes.Equal(buf, []byte("\x1b[?")) {
 		return da1, fmt.Errorf("invalid DA1 response")
 	}
 

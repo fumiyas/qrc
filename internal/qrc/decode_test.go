@@ -316,7 +316,7 @@ func TestRoundTripAA(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintAA(&buf, grid, false, 1)
+			PrintAA(&buf, grid, false, 1, 1)
 			parsed := parseAA(t, buf.Bytes())
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -332,7 +332,7 @@ func TestRoundTripSixel(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintSixel(&buf, grid, false, 1)
+			PrintSixel(&buf, grid, false, 1, 1)
 			parsed := parseSixel(t, buf.Bytes())
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -414,7 +414,7 @@ func TestRoundTripUnicode(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintUnicode(&buf, grid, false, 1)
+			PrintUnicode(&buf, grid, false, 1, 1)
 			parsed := parseUnicode(t, buf.Bytes())
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -472,8 +472,8 @@ func TestPrintAAScale(t *testing.T) {
 	in := testInputs[0]
 	grid := encode(t, in.text)
 	var b1, b2 bytes.Buffer
-	PrintAA(&b1, grid, false, 1)
-	PrintAA(&b2, grid, false, 2)
+	PrintAA(&b1, grid, false, 1, 1)
+	PrintAA(&b2, grid, false, 2, 1)
 	if got, want := countNewlines(b2.Bytes()), countNewlines(b1.Bytes())*2; got != want {
 		t.Errorf("AA scale=2 line count = %d, want %d", got, want)
 	}
@@ -485,8 +485,8 @@ func TestPrintSixelScale(t *testing.T) {
 	in := testInputs[0]
 	grid := encode(t, in.text)
 	var b1, b2 bytes.Buffer
-	PrintSixel(&b1, grid, false, 1)
-	PrintSixel(&b2, grid, false, 2)
+	PrintSixel(&b1, grid, false, 1, 1)
+	PrintSixel(&b2, grid, false, 2, 1)
 	// '-' separates bands, so band count = dashes + 1 (final band has no
 	// trailing dash). The total number of bands must double for scale=2.
 	bands1 := bytes.Count(b1.Bytes(), []byte{'-'}) + 1
@@ -534,8 +534,8 @@ func TestPrintUnicodeScale(t *testing.T) {
 	in := testInputs[0]
 	grid := encode(t, in.text)
 	var b1, b2 bytes.Buffer
-	PrintUnicode(&b1, grid, false, 1)
-	PrintUnicode(&b2, grid, false, 2)
+	PrintUnicode(&b1, grid, false, 1, 1)
+	PrintUnicode(&b2, grid, false, 2, 1)
 	if got, want := countNewlines(b2.Bytes()), countNewlines(b1.Bytes())*2; got != want {
 		t.Errorf("Unicode scale=2 line count = %d, want %d", got, want)
 	}

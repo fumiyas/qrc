@@ -64,7 +64,7 @@ func TestPrintAAGolden(t *testing.T) {
 			t.Run(in.name+"_"+suffix, func(t *testing.T) {
 				grid := encode(t, in.text)
 				var buf bytes.Buffer
-				PrintAA(&buf, grid, inv, 1)
+				PrintAA(&buf, grid, inv, 1, 1)
 				checkGolden(t, "aa_"+in.name+"_"+suffix, buf.Bytes())
 			})
 		}
@@ -83,7 +83,7 @@ func TestPrintSixelGolden(t *testing.T) {
 			t.Run(in.name+"_"+suffix, func(t *testing.T) {
 				grid := encode(t, in.text)
 				var buf bytes.Buffer
-				PrintSixel(&buf, grid, inv, 1)
+				PrintSixel(&buf, grid, inv, 1, 1)
 				checkGolden(t, "sixel_"+in.name+"_"+suffix, buf.Bytes())
 			})
 		}
@@ -102,7 +102,7 @@ func TestPrintUnicodeGolden(t *testing.T) {
 			t.Run(in.name+"_"+suffix, func(t *testing.T) {
 				grid := encode(t, in.text)
 				var buf bytes.Buffer
-				PrintUnicode(&buf, grid, inv, 1)
+				PrintUnicode(&buf, grid, inv, 1, 1)
 				checkGolden(t, "unicode_"+in.name+"_"+suffix, buf.Bytes())
 			})
 		}

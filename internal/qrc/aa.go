@@ -20,11 +20,14 @@ const (
 // PrintAA renders the QR code using ANSI background-color escape
 // sequences and pairs of spaces. Each module is rendered as 2*scale
 // horizontal spaces, and each module row is repeated scale times
-// vertically. A 1-module quiet zone is added on all four sides so the
-// horizontal and vertical margins match. scale must be >= 1.
-func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
+// vertically. A quiet zone of border modules is added on all four
+// sides. scale must be >= 1, border must be >= 0.
+func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale, border int) {
 	if scale < 1 {
 		scale = 1
+	}
+	if border < 0 {
+		border = 0
 	}
 	// Buffering required for Windows (go-colorable) support
 	w := bufio.NewWriterSize(wIn, 1024)
@@ -38,10 +41,10 @@ func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
 
 	size := code.Size
 	moduleSpaces := 2 * scale
-	pad := fmt.Sprintf("%*s", moduleSpaces, "")
-	margin := white + fmt.Sprintf("%*s", (size+2)*moduleSpaces, "") + reset + "\n"
+	pad := fmt.Sprintf("%*s", border*moduleSpaces, "")
+	margin := white + fmt.Sprintf("%*s", (size+2*border)*moduleSpaces, "") + reset + "\n"
 
-	for i := 0; i < scale; i++ {
+	for i := 0; i < border*scale; i++ {
 		fmt.Fprint(w, margin)
 	}
 	for y := 0; y < size; y++ {
@@ -66,7 +69,7 @@ func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
 			w.Flush()
 		}
 	}
-	for i := 0; i < scale; i++ {
+	for i := 0; i < border*scale; i++ {
 		fmt.Fprint(w, margin)
 	}
 	w.Flush()

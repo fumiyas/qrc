@@ -19,6 +19,7 @@ type cmdOptions struct {
 	OutputFormat string `short:"f" long:"output-format" choice:"auto" choice:"ansi" choice:"sixel" choice:"unicode" default:"auto" description:"output format"`
 	ECLevel      string `short:"l" long:"ec-level" choice:"L" choice:"M" choice:"Q" choice:"H" default:"L" description:"QR error correction level"`
 	Scale        int    `short:"s" long:"scale" default:"1" description:"integer scale factor (>= 1)"`
+	Border       int    `short:"b" long:"border" default:"1" description:"quiet zone width in modules (>= 0)"`
 }
 
 func showHelp() {
@@ -43,6 +44,9 @@ Options:
       H  High     (~30%)
   -s, --scale=<N>
     Integer scale factor (default: 1, must be >= 1)
+  -b, --border=<N>
+    Quiet zone width in modules around the QR code
+    (default: 1, must be >= 0)
 
 Text examples:
   http://www.example.jp/
@@ -128,14 +132,19 @@ func main() {
 		ret = 1
 		return
 	}
+	if opts.Border < 0 {
+		pErr("invalid --border: %d (must be >= 0)\n", opts.Border)
+		ret = 1
+		return
+	}
 
 	switch resolveOutputFormat(opts.OutputFormat, os.Stdout) {
 	case "sixel":
-		qrc.PrintSixel(os.Stdout, code, opts.Inverse, opts.Scale)
+		qrc.PrintSixel(os.Stdout, code, opts.Inverse, opts.Scale, opts.Border)
 	case "unicode":
-		qrc.PrintUnicode(os.Stdout, code, opts.Inverse, opts.Scale)
+		qrc.PrintUnicode(os.Stdout, code, opts.Inverse, opts.Scale, opts.Border)
 	case "ansi":
 		stdout := colorable.NewColorableStdout()
-		qrc.PrintAA(stdout, code, opts.Inverse, opts.Scale)
+		qrc.PrintAA(stdout, code, opts.Inverse, opts.Scale, opts.Border)
 	}
 }

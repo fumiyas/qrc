@@ -22,14 +22,18 @@ const (
 // packing two vertically-adjacent modules into a single character cell.
 //
 // Each cell is repeated horizontally scale times and vertically scale
-// times. scale must be >= 1.
+// times. scale must be >= 1, border must be >= 0.
 //
-// A 1-module quiet zone is added around the code; when the resulting
-// height is odd, an extra blank module row is appended at the bottom so
-// that the output remains an integer number of half-block rows.
-func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
+// A quiet zone of border modules is added on all four sides. Because
+// each character row spans two modules, the bottom quiet zone is
+// padded by one extra module when (size + 2*border) is odd so that the
+// output remains an integer number of half-block rows.
+func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool, scale, border int) {
 	if scale < 1 {
 		scale = 1
+	}
+	if border < 0 {
+		border = 0
 	}
 	w := bufio.NewWriterSize(wIn, 1024)
 	size := code.Size
@@ -63,12 +67,12 @@ func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool, scale int) {
 		}
 	}
 
-	totalRows := (size + 3) / 2
+	totalRows := (size + 2*border + 1) / 2
 	for r := 0; r < totalRows; r++ {
-		yTop := r*2 - 1
+		yTop := r*2 - border
 		yBot := yTop + 1
 		for vr := 0; vr < scale; vr++ {
-			for x := -1; x <= size; x++ {
+			for x := -border; x < size+border; x++ {
 				ch := cell(isDark(x, yTop), isDark(x, yBot))
 				for hr := 0; hr < scale; hr++ {
 					fmt.Fprintf(w, "%c", ch)

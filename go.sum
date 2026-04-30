@@ -1,0 +1,15 @@
+github.com/fumiyas/go-tty v0.0.0-20150716131912-7bee8b8caca1 h1:T85jYE6b7xLYBiTawFMSpR3nbB3i03O7zCVe8oLgqYw=
+github.com/fumiyas/go-tty v0.0.0-20150716131912-7bee8b8caca1/go.mod h1:hnsKbncKU/f+LNE6eY7hUiK0X2PfqNkiMayS47LxkhQ=
+github.com/jessevdk/go-flags v1.6.1 h1:Cvu5U8UGrLay1rZfv/zP7iLpSHGUZ/Ou68T0iX1bBK4=
+github.com/jessevdk/go-flags v1.6.1/go.mod h1:Mk8T1hIAWpOiJiHa9rJASDK2UGWji0EuPGBnNLMooyc=
+github.com/mattn/go-colorable v0.1.14 h1:9A9LHSqF/7dyVVX6g0U9cwm9pG3kP9gSzcuIPHPsaIE=
+github.com/mattn/go-colorable v0.1.14/go.mod h1:6LmQG8QLFO4G5z1gPvYEzlUgJ2wF+stgPZH1UqBm1s8=
+github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
+github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
+github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=
+github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d/go.mod h1:01TrycV0kFyexm33Z7vhZRXopbI8J3TDReVlkTgMUxE=
+github.com/qpliu/qrencode-go v0.0.0-20170225035013-ad8353b4581f h1:vBUSDjeBDi9l5rqWuBKtEzt5yxU1p0EkN0tpiKYuP5g=
+github.com/qpliu/qrencode-go v0.0.0-20170225035013-ad8353b4581f/go.mod h1:FDXzD//kxkV8UZ6SnKHa2f9/x2QAKrSYeD2YnyPJY/s=
+golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.29.0 h1:TPYlXGxvx1MGTn2GiZDhnjPA9wZzZeGKHHmKhHYvgaU=
+golang.org/x/sys v0.29.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=

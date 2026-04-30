@@ -68,13 +68,13 @@ func PrintUnicode(wIn io.Writer, code *qr.Code, inverse bool, scale, border int)
 	}
 
 	totalRows := (size + 2*border + 1) / 2
-	for r := 0; r < totalRows; r++ {
+	for r := range totalRows {
 		yTop := r*2 - border
 		yBot := yTop + 1
-		for vr := 0; vr < scale; vr++ {
+		for range scale {
 			for x := -border; x < size+border; x++ {
 				ch := cell(isDark(x, yTop), isDark(x, yBot))
-				for hr := 0; hr < scale; hr++ {
+				for range scale {
 					fmt.Fprintf(w, "%c", ch)
 				}
 			}

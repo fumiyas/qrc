@@ -94,7 +94,7 @@ func parseAA(t *testing.T, data []byte, border int) [][]bool {
 			t.Fatalf("parseAA: row %d inner width %d not divisible by 2", ri, len(inner))
 		}
 		row := make([]bool, len(inner)/2)
-		for x := 0; x < len(row); x++ {
+		for x := range len(row) {
 			a, b := inner[x*2], inner[x*2+1]
 			if a.dark != b.dark {
 				t.Fatalf("parseAA: row %d module %d color mismatch", ri, x)
@@ -238,7 +238,7 @@ func appendSixelRun(t *testing.T, current *[]bool, color int, six byte, n int) {
 		t.Fatalf("parseSixel: pixel without selected color")
 	}
 	dark := color == 0
-	for i := 0; i < n; i++ {
+	for range n {
 		*current = append(*current, dark)
 	}
 }
@@ -279,15 +279,15 @@ func gridToImage(grid [][]bool) *image.Gray {
 	for i := range img.Pix {
 		img.Pix[i] = 0xff
 	}
-	for y := 0; y < h; y++ {
-		for x := 0; x < w; x++ {
+	for y := range h {
+		for x := range w {
 			if !grid[y][x] {
 				continue
 			}
 			x0 := (x + quiet) * scale
 			y0 := (y + quiet) * scale
-			for dy := 0; dy < scale; dy++ {
-				for dx := 0; dx < scale; dx++ {
+			for dy := range scale {
+				for dx := range scale {
 					img.SetGray(x0+dx, y0+dy, color.Gray{Y: 0})
 				}
 			}
@@ -439,16 +439,16 @@ func downsampleGrid(t *testing.T, grid [][]bool, scale int) [][]bool {
 		t.Fatalf("downsampleGrid: height %d not divisible by %d", len(grid), scale)
 	}
 	out := make([][]bool, len(grid)/scale)
-	for y := 0; y < len(out); y++ {
+	for y := range len(out) {
 		row := grid[y*scale]
 		if len(row)%scale != 0 {
 			t.Fatalf("downsampleGrid: width %d not divisible by %d", len(row), scale)
 		}
 		out[y] = make([]bool, len(row)/scale)
-		for x := 0; x < len(out[y]); x++ {
+		for x := range len(out[y]) {
 			v := row[x*scale]
-			for dy := 0; dy < scale; dy++ {
-				for dx := 0; dx < scale; dx++ {
+			for dy := range scale {
+				for dx := range scale {
 					if grid[y*scale+dy][x*scale+dx] != v {
 						t.Fatalf("downsampleGrid: non-uniform block at (%d,%d)", x, y)
 					}
@@ -513,7 +513,7 @@ func TestPrintSixelScale(t *testing.T) {
 
 func extractSixelRuns(data []byte) []int {
 	var runs []int
-	for i := 0; i < len(data); i++ {
+	for i := range len(data) {
 		if data[i] != '!' {
 			continue
 		}

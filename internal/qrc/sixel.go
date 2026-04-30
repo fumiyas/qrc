@@ -36,18 +36,18 @@ func PrintSixel(w io.Writer, code *qr.Code, inverse bool, scale, border int) {
 	line := "#" + white + "!" + fmt.Sprintf("%d", (size+2*border)*pxPerModule) + "~"
 
 	// Top quiet zone: border*scale all-white bands.
-	for i := 0; i < border*scale; i++ {
+	for range border * scale {
 		fmt.Fprint(w, line, "-")
 	}
-	for y := 0; y < size; y++ {
+	for y := range size {
 		// Build the band content for this module row once, then emit
 		// the same band scale times to scale vertically.
-		for b := 0; b < scale; b++ {
+		for b := range scale {
 			fmt.Fprint(w, "#", white)
 			color := white
 			repeat := marginPx
 			var current string
-			for x := 0; x < size; x++ {
+			for x := range size {
 				if code.Black(x, y) {
 					current = black
 				} else {
@@ -82,7 +82,7 @@ func PrintSixel(w io.Writer, code *qr.Code, inverse bool, scale, border int) {
 	// Bottom quiet zone: border*scale bands. The very last band has no
 	// trailing '-' because there is no following band.
 	if border > 0 {
-		for i := 0; i < border*scale-1; i++ {
+		for range border*scale - 1 {
 			fmt.Fprint(w, line, "-")
 		}
 		fmt.Fprint(w, line)

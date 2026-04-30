@@ -44,14 +44,14 @@ func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale, border int) {
 	pad := fmt.Sprintf("%*s", border*moduleSpaces, "")
 	margin := white + fmt.Sprintf("%*s", (size+2*border)*moduleSpaces, "") + reset + "\n"
 
-	for i := 0; i < border*scale; i++ {
+	for range border * scale {
 		fmt.Fprint(w, margin)
 	}
-	for y := 0; y < size; y++ {
-		for r := 0; r < scale; r++ {
+	for y := range size {
+		for range scale {
 			fmt.Fprint(w, white, pad)
 			colorPrev := white
-			for x := 0; x < size; x++ {
+			for x := range size {
 				if code.Black(x, y) {
 					if colorPrev != black {
 						fmt.Fprint(w, black)
@@ -69,7 +69,7 @@ func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale, border int) {
 			w.Flush()
 		}
 	}
-	for i := 0; i < border*scale; i++ {
+	for range border * scale {
 		fmt.Fprint(w, margin)
 	}
 	w.Flush()

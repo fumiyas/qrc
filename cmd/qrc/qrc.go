@@ -36,8 +36,8 @@ Text examples:
 }
 
 func pErr(format string, a ...interface{}) {
-	fmt.Fprint(os.Stdout, os.Args[0], ": ")
-	fmt.Fprintf(os.Stdout, format, a...)
+	fmt.Fprint(os.Stderr, os.Args[0], ": ")
+	fmt.Fprintf(os.Stderr, format, a...)
 }
 
 func main() {

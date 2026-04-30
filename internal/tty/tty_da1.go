@@ -42,14 +42,14 @@ type DeviceAttributes1 [DA1_MAX+1]bool
 
 func GetDeviceAttributes1(file *os.File) (DeviceAttributes1, error) {
 	var err error
-	var termios_save Termios
+	var termiosSave Termios
 	var da1 DeviceAttributes1
 
-	termios_save, err = MakeRaw(file)
+	termiosSave, err = MakeRaw(file)
 	if err != nil {
 		return da1, err
 	}
-	defer SetTermios(file, termios_save)
+	defer SetTermios(file, termiosSave)
 
 	file.WriteString("\x1B[c")
 

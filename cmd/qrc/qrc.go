@@ -61,13 +61,13 @@ func main() {
 	if len(args) == 1 {
 		text = args[0]
 	} else {
-		text_bytes, err := io.ReadAll(os.Stdin)
+		textBytes, err := io.ReadAll(os.Stdin)
 		if err != nil {
 			pErr("read from stdin failed: %v\n", err)
 			ret = 1
 			return
 		}
-		text = string(text_bytes)
+		text = string(textBytes)
 	}
 
 	grid, err := qrencode.Encode(text, qrencode.ECLevelL)

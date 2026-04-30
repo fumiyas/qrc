@@ -47,7 +47,7 @@ func MakeRaw(file *os.File) (Termios, error) {
 		return termios, err
 	}
 
-	termios_save := termios
+	termiosSave := termios
 
 	termios.Iflag &^= (syscall.IGNBRK | syscall.BRKINT | syscall.PARMRK | syscall.ISTRIP | syscall.INLCR | syscall.IGNCR | syscall.ICRNL | syscall.IXON)
 	termios.Oflag &^= syscall.OPOST
@@ -57,7 +57,7 @@ func MakeRaw(file *os.File) (Termios, error) {
 
 	err = SetTermios(file, termios)
 
-	return termios_save, err
+	return termiosSave, err
 }
 
 // IsTty checks if the given fd is a tty

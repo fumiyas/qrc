@@ -17,9 +17,9 @@ const (
 	ansiWhite = "\x1b[0;30;47m" // black foreground on white background
 )
 
-func PrintAA(w_in io.Writer, grid *qrencode.BitGrid, inverse bool) {
+func PrintAA(wIn io.Writer, grid *qrencode.BitGrid, inverse bool) {
 	// Buffering required for Windows (go-colorable) support
-	w := bufio.NewWriterSize(w_in, 1024)
+	w := bufio.NewWriterSize(wIn, 1024)
 
 	reset := ansiReset
 	black := ansiBlack
@@ -35,17 +35,17 @@ func PrintAA(w_in io.Writer, grid *qrencode.BitGrid, inverse bool) {
 	fmt.Fprint(w, line)
 	for y := 0; y < height; y++ {
 		fmt.Fprint(w, white, " ")
-		color_prev := white
+		colorPrev := white
 		for x := 0; x < width; x++ {
 			if grid.Get(x, y) {
-				if color_prev != black {
+				if colorPrev != black {
 					fmt.Fprint(w, black)
-					color_prev = black
+					colorPrev = black
 				}
 			} else {
-				if color_prev != white {
+				if colorPrev != white {
 					fmt.Fprint(w, white)
-					color_prev = white
+					colorPrev = white
 				}
 			}
 			fmt.Fprint(w, "  ")

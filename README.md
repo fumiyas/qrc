@@ -54,8 +54,6 @@ Binary files are here for Linux, macOS and Windows:
 Build from source codes
 ---------------------------------------------------------------------
 
-Requires Go 1.21 or later.
-
 Install the latest released version of `qrc` directly with `go install`:
 
 ```console

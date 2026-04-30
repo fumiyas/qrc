@@ -17,6 +17,7 @@ type cmdOptions struct {
 	Help         bool   `short:"h" long:"help" description:"show this help message"`
 	Inverse      bool   `short:"i" long:"invert" description:"invert color"`
 	OutputFormat string `short:"f" long:"output-format" choice:"auto" choice:"ansi" choice:"sixel" choice:"unicode" default:"auto" description:"output format"`
+	ECLevel      string `short:"l" long:"ec-level" choice:"L" choice:"M" choice:"Q" choice:"H" default:"L" description:"QR error correction level"`
 }
 
 func showHelp() {
@@ -33,6 +34,12 @@ Options:
       ansi     ANSI background color escape sequences
       sixel    Sixel graphics
       unicode  Unicode half-block characters (▀ ▄ █)
+  -l, --ec-level=<L|M|Q|H>
+    QR error correction level (default: L)
+      L  Low      (~7%)
+      M  Medium   (~15%)
+      Q  Quartile (~25%)
+      H  High     (~30%)
 
 Text examples:
   http://www.example.jp/
@@ -55,6 +62,20 @@ func resolveOutputFormat(format string, w *os.File) string {
 		return "sixel"
 	}
 	return "ansi"
+}
+
+// qrLevel maps the --ec-level string to the rsc.io/qr level constant.
+func qrLevel(s string) qr.Level {
+	switch s {
+	case "M":
+		return qr.M
+	case "Q":
+		return qr.Q
+	case "H":
+		return qr.H
+	default:
+		return qr.L
+	}
 }
 
 func pErr(format string, a ...interface{}) {
@@ -92,7 +113,7 @@ func main() {
 		text = string(textBytes)
 	}
 
-	code, err := qr.Encode(text, qr.L)
+	code, err := qr.Encode(text, qrLevel(opts.ECLevel))
 	if err != nil {
 		pErr("encode failed: %v\n", err)
 		ret = 1

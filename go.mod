@@ -3,7 +3,6 @@ module github.com/fumiyas/qrc
 go 1.21
 
 require (
-	github.com/fumiyas/go-tty v0.0.0-20150716131912-7bee8b8caca1
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/makiuchi-d/gozxing v0.1.1
 	github.com/mattn/go-colorable v0.1.14

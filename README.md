@@ -1,10 +1,10 @@
 QR code generator for text terminals
 ======================================================================
 
-  * Copyright (C) 2014-2026 SATOH Fumiyasu @ OSSTech Corp., Japan
-  * License: MIT License
-  * Development home: <https://github.com/fumiyas/qrc>
-  * Author's home: <https://fumiyas.github.io/>
+* SPDX-FileCopyrightText: 2014-2026 SATOH Fumiyasu @ OSSTech Corp., Japan
+* SPDX-License-Identifier: MIT
+* Development home: <https://github.com/fumiyas/qrc>
+* Author's home: <https://fumiyas.github.io/>
 
 What's this?
 ---------------------------------------------------------------------
@@ -74,26 +74,26 @@ $ make cross       # cross-compile for Linux, macOS and Windows
 TODO
 ----------------------------------------------------------------------
 
-  * Add the following options:
+* Add the following options:
     * `--aa-color-scheme <ansi|windows>`
     * `--foreground-color R:G:B`
     * `--background-color R:G:B`
     * `--margin-color R:G:B`
-  * Timeout for tty.GetDeviceAttributes1()
+* Timeout for tty.GetDeviceAttributes1()
 
 Contributors
 ----------------------------------------------------------------------
 
-  * Hayaki Saito (@saitoha)
+* Hayaki Saito (@saitoha)
 
 Similar products
 ----------------------------------------------------------------------
 
-  * Go
+* Go
     * <https://godoc.org/github.com/GeertJohan/go.qrt>
-  * JavaScript (Node)
+* JavaScript (Node)
     * <https://github.com/gtanner/qrcode-terminal>
-  * Ruby
+* Ruby
     * <https://gist.github.com/saitoha/10483508> (qrcode-sixel)
     * <https://gist.github.com/fumiyas/10490722> (qrcode-sixel)
     * <https://github.com/fumiyas/home-commands/blob/master/qrcode-aa>

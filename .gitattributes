@@ -1,0 +1,15 @@
+# Default: treat files as text and normalize line endings to LF in the
+# working tree on all platforms. This keeps test golden files byte-for-byte
+# identical to what the renderers emit (which is LF on every platform),
+# even when contributors clone with the default core.autocrlf=true on
+# Windows.
+* text=auto eol=lf
+
+# Golden files contain raw bytes (including ESC sequences) and are
+# compared byte-for-byte against renderer output. Pin them to LF
+# explicitly so git never auto-detects them as binary nor rewrites the
+# line endings.
+*.golden text eol=lf
+
+# Known binary file types.
+*.png binary

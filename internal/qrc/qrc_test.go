@@ -52,7 +52,7 @@ func checkGolden(t *testing.T, name string, got []byte) {
 	}
 }
 
-func TestPrintAAGolden(t *testing.T) {
+func TestPrintANSIGolden(t *testing.T) {
 	for _, in := range testInputs {
 		for _, inv := range []bool{false, true} {
 			inv := inv
@@ -63,7 +63,7 @@ func TestPrintAAGolden(t *testing.T) {
 			t.Run(in.name+"_"+suffix, func(t *testing.T) {
 				grid := encode(t, in.text)
 				var buf bytes.Buffer
-				PrintAA(&buf, grid, inv, 1, 1)
+				PrintANSI(&buf, grid, inv, 1, 1)
 				checkGolden(t, "aa_"+in.name+"_"+suffix, buf.Bytes())
 			})
 		}

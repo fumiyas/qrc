@@ -75,7 +75,7 @@ TODO
 ----------------------------------------------------------------------
 
 * Add the following options:
-    * `--aa-color-scheme <ansi|windows>`
+    * `--ansi-color-scheme <ansi|windows>`
     * `--foreground-color R:G:B`
     * `--background-color R:G:B`
     * `--margin-color R:G:B`

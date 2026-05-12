@@ -145,6 +145,6 @@ func main() {
 		qrc.PrintUnicode(os.Stdout, code, opts.Inverse, opts.Scale, opts.Border)
 	case "ansi":
 		stdout := colorable.NewColorableStdout()
-		qrc.PrintAA(stdout, code, opts.Inverse, opts.Scale, opts.Border)
+		qrc.PrintANSI(stdout, code, opts.Inverse, opts.Scale, opts.Border)
 	}
 }

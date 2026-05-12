@@ -17,12 +17,12 @@ const (
 	ansiWhite = "\x1b[0;30;47m" // black foreground on white background
 )
 
-// PrintAA renders the QR code using ANSI background-color escape
+// PrintANSI renders the QR code using ANSI background-color escape
 // sequences and pairs of spaces. Each module is rendered as 2*scale
 // horizontal spaces, and each module row is repeated scale times
 // vertically. A quiet zone of border modules is added on all four
 // sides. scale must be >= 1, border must be >= 0.
-func PrintAA(wIn io.Writer, code *qr.Code, inverse bool, scale, border int) {
+func PrintANSI(wIn io.Writer, code *qr.Code, inverse bool, scale, border int) {
 	if scale < 1 {
 		scale = 1
 	}

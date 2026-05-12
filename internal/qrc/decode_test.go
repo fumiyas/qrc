@@ -11,8 +11,8 @@ import (
 	"github.com/makiuchi-d/gozxing/qrcode"
 )
 
-// parseAA reverses PrintAA's output back into a 2D module grid where
-// true means a "dark" (black) module. The layout produced by PrintAA is:
+// parseAA reverses PrintANSI's output back into a 2D module grid where
+// true means a "dark" (black) module. The layout produced by PrintANSI is:
 //
 //   - one full-width white margin row at top and bottom
 //   - each data row starts and ends with a 1-character white margin and
@@ -315,7 +315,7 @@ func TestRoundTripAA(t *testing.T) {
 		t.Run(in.name, func(t *testing.T) {
 			grid := encode(t, in.text)
 			var buf bytes.Buffer
-			PrintAA(&buf, grid, false, 1, 1)
+			PrintANSI(&buf, grid, false, 1, 1)
 			parsed := parseAA(t, buf.Bytes(), 1)
 			got := decodeQR(t, parsed)
 			if got != in.text {
@@ -464,15 +464,15 @@ func countNewlines(data []byte) int {
 	return bytes.Count(data, []byte{'\n'})
 }
 
-// TestPrintAAScale verifies that scale=N produces output whose visible
+// TestPrintANSIScale verifies that scale=N produces output whose visible
 // dimensions grow exactly by N. Combined with the scale=1 round-trip
 // test, this implies scale=N output is also scannable.
-func TestPrintAAScale(t *testing.T) {
+func TestPrintANSIScale(t *testing.T) {
 	in := testInputs[0]
 	grid := encode(t, in.text)
 	var b1, b2 bytes.Buffer
-	PrintAA(&b1, grid, false, 1, 1)
-	PrintAA(&b2, grid, false, 2, 1)
+	PrintANSI(&b1, grid, false, 1, 1)
+	PrintANSI(&b2, grid, false, 2, 1)
 	if got, want := countNewlines(b2.Bytes()), countNewlines(b1.Bytes())*2; got != want {
 		t.Errorf("AA scale=2 line count = %d, want %d", got, want)
 	}
@@ -548,15 +548,15 @@ func TestPrintUnicodeScale(t *testing.T) {
 
 func utf8RuneCount(b []byte) int { return len([]rune(string(b))) }
 
-// TestPrintAABorder verifies that --border N changes the output
+// TestPrintANSIBorder verifies that --border N changes the output
 // dimensions linearly, that border=0 produces no quiet zone, and that
 // the QR code remains decodable for both border=0 and border=2.
-func TestPrintAABorder(t *testing.T) {
+func TestPrintANSIBorder(t *testing.T) {
 	in := testInputs[0]
 	grid := encode(t, in.text)
 	for _, border := range []int{0, 2} {
 		var buf bytes.Buffer
-		PrintAA(&buf, grid, false, 1, border)
+		PrintANSI(&buf, grid, false, 1, border)
 		// Line count = size + 2*border.
 		if got, want := countNewlines(buf.Bytes()), grid.Size+2*border; got != want {
 			t.Errorf("AA border=%d line count = %d, want %d", border, got, want)
